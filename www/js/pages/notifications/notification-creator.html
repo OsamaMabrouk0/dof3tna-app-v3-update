@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء إشعار جديد - Dof3atna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .icon-preview {
+            transition: all 0.3s ease;
+        }
+        .icon-preview:hover {
+            transform: scale(1.1);
+        }
+        .icon-preview.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="glass-panel rounded-3xl p-6 md:p-8 mb-6 shadow-2xl">
+            <div class="flex items-center gap-4 mb-2">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-bell text-3xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">إنشاء إشعار جديد</h1>
+                    <p class="text-gray-600 text-sm">قم بإنشاء إشعار لعرضه في التطبيق</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl">
+            <form id="notificationForm" class="space-y-6">
+                <!-- Title -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        <i class="fa-solid fa-heading ml-2 text-blue-500"></i>
+                        عنوان الإشعار
+                    </label>
+                    <input type="text" id="title" required
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition"
+                           placeholder="مثال: تحديث جديد - الإصدار 3.0">
+                </div>
+
+                <!-- Message -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        <i class="fa-solid fa-message ml-2 text-green-500"></i>
+                        نص الرسالة
+                    </label>
+                    <textarea id="message" rows="4" required
+                              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition resize-none"
+                              placeholder="اكتب رسالة الإشعار هنا..."></textarea>
+                    <p class="text-xs text-gray-500 mt-2">
+                        <span id="charCount">0</span> حرف
+                    </p>
+                </div>
+
+                <!-- Icon Selection -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">
+                        <i class="fa-solid fa-icons ml-2 text-purple-500"></i>
+                        اختر الأيقونة
+                    </label>
+                    <input type="hidden" id="selectedIcon" value="fa-bell">
+                    <div class="grid grid-cols-6 md:grid-cols-10 gap-3">
+                        <button type="button" class="icon-preview selected w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-bell">
+                            <i class="fa-solid fa-bell text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-rocket">
+                            <i class="fa-solid fa-rocket text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-book-open">
+                            <i class="fa-solid fa-book-open text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-check-circle">
+                            <i class="fa-solid fa-check-circle text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-exclamation-triangle">
+                            <i class="fa-solid fa-exclamation-triangle text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-wrench">
+                            <i class="fa-solid fa-wrench text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-lightbulb">
+                            <i class="fa-solid fa-lightbulb text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-star">
+                            <i class="fa-solid fa-star text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-fire">
+                            <i class="fa-solid fa-fire text-xl"></i>
+                        </button>
+                        <button type="button" class="icon-preview w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-blue-500" data-icon="fa-heart">
+                            <i class="fa-solid fa-heart text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">
+                        <i class="fa-solid fa-palette ml-2 text-pink-500"></i>
+                        اختر اللون
+                    </label>
+                    <div class="grid grid-cols-4 md:grid-cols-8 gap-3">
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-blue-500 border-4 border-white shadow-lg hover:scale-110 transition" data-color="blue"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-green-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="green"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-red-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="red"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-yellow-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="yellow"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-purple-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="purple"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-pink-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="pink"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-indigo-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="indigo"></button>
+                        <button type="button" class="color-option w-12 h-12 rounded-lg bg-teal-500 border-4 border-transparent shadow-lg hover:scale-110 transition" data-color="teal"></button>
+                    </div>
+                    <input type="hidden" id="selectedColor" value="blue">
+                </div>
+
+                <!-- Priority -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">
+                        <i class="fa-solid fa-flag ml-2 text-orange-500"></i>
+                        الأولوية
+                    </label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button type="button" class="priority-btn px-4 py-3 rounded-xl bg-green-100 text-green-700 font-bold hover:bg-green-200 transition border-2 border-transparent" data-priority="low">
+                            <i class="fa-solid fa-flag ml-1"></i> منخفضة
+                        </button>
+                        <button type="button" class="priority-btn px-4 py-3 rounded-xl bg-yellow-100 text-yellow-700 font-bold hover:bg-yellow-200 transition border-2 border-yellow-500" data-priority="medium">
+                            <i class="fa-solid fa-flag ml-1"></i> متوسطة
+                        </button>
+                        <button type="button" class="priority-btn px-4 py-3 rounded-xl bg-red-100 text-red-700 font-bold hover:bg-red-200 transition border-2 border-transparent" data-priority="high">
+                            <i class="fa-solid fa-flag ml-1"></i> عالية
+                        </button>
+                    </div>
+                    <input type="hidden" id="selectedPriority" value="medium">
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        <i class="fa-solid fa-folder ml-2 text-cyan-500"></i>
+                        الفئة
+                    </label>
+                    <select id="category" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition">
+                        <option value="update">تحديث</option>
+                        <option value="content">محتوى جديد</option>
+                        <option value="maintenance">صيانة</option>
+                        <option value="fix">إصلاح</option>
+                        <option value="tips">نصائح</option>
+                        <option value="announcement">إعلان</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:shadow-xl transition transform hover:scale-105">
+                        <i class="fa-solid fa-plus ml-2"></i>
+                        إنشاء الإشعار
+                    </button>
+                    <button type="button" id="resetBtn" class="px-6 py-4 rounded-xl bg-gray-200 text-gray-700 font-bold hover:bg-gray-300 transition">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Preview -->
+            <div class="mt-8 pt-8 border-t-2 border-gray-200">
+                <h3 class="text-lg font-bold text-gray-700 mb-4">
+                    <i class="fa-solid fa-eye ml-2 text-blue-500"></i>
+                    معاينة الإشعار
+                </h3>
+                <div id="preview" class="glass-panel rounded-2xl p-5 shadow-lg">
+                    <div class="flex items-start gap-4">
+                        <div id="previewIcon" class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-bell text-xl text-blue-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="previewTitle" class="font-bold text-base mb-1 text-gray-800">عنوان الإشعار</h4>
+                            <p id="previewMessage" class="text-sm text-gray-600 leading-relaxed">نص الرسالة سيظهر هنا...</p>
+                            <p class="text-xs text-gray-400 mt-2">
+                                <i class="fa-regular fa-clock ml-1"></i>
+                                الآن
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output -->
+            <div class="mt-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg font-bold text-gray-700">
+                        <i class="fa-solid fa-code ml-2 text-green-500"></i>
+                        كود JSON
+                    </h3>
+                    <button type="button" id="copyBtn" class="px-4 py-2 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition text-sm">
+                        <i class="fa-solid fa-copy ml-1"></i>
+                        نسخ
+                    </button>
+                </div>
+                <pre id="jsonOutput" class="bg-gray-900 text-green-400 p-4 rounded-xl overflow-x-auto text-xs font-mono">// سيظهر كود JSON هنا بعد الإنشاء</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('notificationForm');
+        const titleInput = document.getElementById('title');
+        const messageInput = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+        const iconBtns = document.querySelectorAll('.icon-preview');
+        const colorBtns = document.querySelectorAll('.color-option');
+        const priorityBtns = document.querySelectorAll('.priority-btn');
+        const categorySelect = document.getElementById('category');
+        const resetBtn = document.getElementById('resetBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const jsonOutput = document.getElementById('jsonOutput');
+        
+        const previewIcon = document.getElementById('previewIcon');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewMessage = document.getElementById('previewMessage');
+
+        let selectedIcon = 'fa-bell';
+        let selectedColor = 'blue';
+        let selectedPriority = 'medium';
+
+        // Character count
+        messageInput.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+            updatePreview();
+        });
+
+        titleInput.addEventListener('input', updatePreview);
+
+        // Icon selection
+        iconBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                iconBtns.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedIcon = this.dataset.icon;
+                document.getElementById('selectedIcon').value = selectedIcon;
+                updatePreview();
+            });
+        });
+
+        // Color selection
+        colorBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                colorBtns.forEach(b => b.classList.remove('border-white'));
+                colorBtns.forEach(b => b.classList.add('border-transparent'));
+                this.classList.remove('border-transparent');
+                this.classList.add('border-white');
+                selectedColor = this.dataset.color;
+                document.getElementById('selectedColor').value = selectedColor;
+                updatePreview();
+            });
+        });
+
+        // Priority selection
+        priorityBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                priorityBtns.forEach(b => b.classList.remove('border-opacity-100'));
+                priorityBtns.forEach(b => b.style.borderColor = 'transparent');
+                this.style.borderColor = 'currentColor';
+                selectedPriority = this.dataset.priority;
+                document.getElementById('selectedPriority').value = selectedPriority;
+            });
+        });
+
+        // Update preview
+        function updatePreview() {
+            const title = titleInput.value || 'عنوان الإشعار';
+            const message = messageInput.value || 'نص الرسالة سيظهر هنا...';
+            
+            previewTitle.textContent = title;
+            previewMessage.textContent = message;
+            
+            previewIcon.className = `w-12 h-12 rounded-xl bg-${selectedColor}-500/10 flex items-center justify-center flex-shrink-0`;
+            previewIcon.innerHTML = `<i class="fa-solid ${selectedIcon} text-xl text-${selectedColor}-500"></i>`;
+        }
+
+        // Form submit
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const now = new Date();
+            const notification = {
+                id: `notif_${Date.now()}`,
+                title: titleInput.value,
+                message: messageInput.value,
+                icon: selectedIcon,
+                color: selectedColor,
+                timestamp: now.toISOString(),
+                priority: selectedPriority,
+                category: categorySelect.value
+            };
+
+            jsonOutput.textContent = JSON.stringify(notification, null, 2);
+            jsonOutput.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Reset
+        resetBtn.addEventListener('click', function() {
+            form.reset();
+            iconBtns.forEach(b => b.classList.remove('selected'));
+            iconBtns[0].classList.add('selected');
+            colorBtns.forEach(b => {
+                b.classList.remove('border-white');
+                b.classList.add('border-transparent');
+            });
+            colorBtns[0].classList.remove('border-transparent');
+            colorBtns[0].classList.add('border-white');
+            selectedIcon = 'fa-bell';
+            selectedColor = 'blue';
+            selectedPriority = 'medium';
+            jsonOutput.textContent = '// سيظهر كود JSON هنا بعد الإنشاء';
+            charCount.textContent = '0';
+            updatePreview();
+        });
+
+        // Copy
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(jsonOutput.textContent).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fa-solid fa-check ml-1"></i> تم النسخ!';
+                copyBtn.classList.add('bg-green-700');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.classList.remove('bg-green-700');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
