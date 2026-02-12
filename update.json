@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "files": [
+    {
+      "name": "index.html",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/update-content/main/www/index.html"
+    },
+    {
+      "name": "assets/css/style.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/update-content/main/www/assets/css/style.css"
+    },
+    {
+      "name": "assets/images/timetable.png",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/update-content/main/www/assets/images/timetable.png"
+    }
+  ]
+}
