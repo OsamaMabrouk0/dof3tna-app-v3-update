@@ -1,9 +1,134 @@
 {
-  "version": 2,
+  "version": 3,
   "files": [
     {
       "name": "css/skeleton-loader.css",
-      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/skeleton-loader.css"
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/skeleton-loader.css"
+    },
+    {
+      "name": "css/variables.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/variables.css"
+    },
+    {
+      "name": "css/base.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/base.css"
+    },
+    {
+      "name": "css/components.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/components.css"
+    },
+    {
+      "name": "css/sidebar-styles.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/sidebar-styles.css"
+    },
+    {
+      "name": "css/animations.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/animations.css"
+    },
+    {
+      "name": "css/effects.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/effects.css"
+    },
+    {
+      "name": "css/toast.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/toast.css"
+    },
+
+    {
+      "name": "js/pages/home/skeleton-loader.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/home/skeleton-loader.js"
+    },
+    {
+      "name": "js/core/namespace.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/namespace.js"
+    },
+    {
+      "name": "js/core/constants.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/constants.js"
+    },
+    {
+      "name": "js/core/state.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/state.js"
+    },
+    {
+      "name": "js/core/router.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/router.js"
+    },
+
+    {
+      "name": "js/utils/utils.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/utils/utils.js"
+    },
+    {
+      "name": "js/utils/cache.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/utils/cache.js"
+    },
+    {
+      "name": "js/utils/api.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/utils/api.js"
+    },
+
+    {
+      "name": "js/ui/ui.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/ui/ui.js"
+    },
+    {
+      "name": "js/ui/effects.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/ui/effects.js"
+    },
+    {
+      "name": "js/ui/toast.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/ui/toast.js"
+    },
+
+    {
+      "name": "js/pages/home/home.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/home/home.js"
+    },
+    {
+      "name": "js/pages/lectures/lectures.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/lectures/lectures.js"
+    },
+    {
+      "name": "js/pages/summaries/summaries.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/summaries/summaries.js"
+    },
+    {
+      "name": "js/pages/links/links.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/links/links.js"
+    },
+    {
+      "name": "js/pages/videos/videos.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/videos/videos.js"
+    },
+    {
+      "name": "js/pages/schedules/schedules.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/schedules/schedules.js"
+    },
+    {
+      "name": "js/pages/buildings/buildings.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/buildings/buildings.js"
+    },
+    {
+      "name": "js/pages/bookmarks/bookmarks.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/bookmarks/bookmarks.js"
+    },
+    {
+      "name": "js/pages/settings/settings.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/settings/settings.js"
+    },
+    {
+      "name": "js/pages/notifications/notifications.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/notifications/notifications.js"
+    },
+    {
+      "name": "js/pages/default/default.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/default/default.js"
+    },
+
+    {
+      "name": "js/core/init.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/init.js"
     }
   ]
 }
