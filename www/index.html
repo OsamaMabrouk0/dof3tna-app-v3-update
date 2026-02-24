@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="description" content="منصة دفعتنا التعليمية - نسخة محسّنة v3.0">
+    <title>منصة دفعتنا | Dof3atna v3.0</title>
+
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+    <script>
+        (function () {
+            var oldWarn = console.warn;
+            console.warn = function (message) {
+                if (typeof message === 'string' && message.includes('cdn.tailwindcss.com')) return;
+                oldWarn.apply(console, arguments);
+            };
+        })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3b82f6',
+                        oled: '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/skeleton-loader.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sidebar-styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/effects.css">
+    <link rel="stylesheet" href="css/toast.css">
+
+    <style>
+        .swal-dark {
+            background: rgba(17, 25, 40, 0.95) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .swal-dark .swal2-title,
+        .swal-dark .swal2-content {
+            color: #ffffff !important;
+        }
+
+        .swal-dark .swal2-html-container {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <div id=""></div>
+    <!-- Background Layers -->
+    <div class="bg-layer bg-light-grad"></div>
+    <div class="bg-layer bg-dark-grad"></div>
+    <div class="bg-layer bg-oled-solid"></div>
+
+    <!-- Animated Particles -->
+    <div class="particles-bg" id="particles-container"></div>
+
+    <!-- Grid Pattern -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none z-[-1]"
+        style="background-image: linear-gradient(#808080 1px, transparent 1px), linear-gradient(to right, #808080 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Main Layout Container -->
+    <div id="app-container"
+        class="relative min-h-screen flex flex-col md:flex-row overflow-hidden opacity-0 transition-opacity duration-500">
+
+        <!-- Sidebar -->
+
+        <aside id="sidebar"
+            class="fixed inset-y-0 right-0 w-20 glass-panel z-[60] transform translate-x-full md:translate-x-0 transition-transform duration-300 md:relative flex flex-col h-full border-l-0 md:border-l border-white/5">
+
+            <!-- Sidebar Header -->
+            <div class="p-6 flex items-center justify-center flex-col gap-2">
+                <!-- Logo -->
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-glow">
+                    <i class="fa-solid fa-graduation-cap text-xl text-white"></i>
+                </div>
+
+                <!-- Logo Text (Minimal) -->
+                <h1 class="text-xs font-bold tracking-wide font-cairo">دفعتنا</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-2 py-2 overflow-y-auto custom-scrollbar" id="sidebar-links">
+                <!-- Links injected via JavaScript -->
+            </nav>
+
+        </aside>
+
+        <!-- Sidebar Overlay (Hidden) -->
+        <div id="sidebar-overlay"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[50] hidden transition-opacity duration-300 opacity-0">
+        </div>
+
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col relative h-screen overflow-hidden">
+
+            <!-- Header -->
+            <header
+                class="h-20 glass-panel md:bg-transparent md:border-none flex items-center justify-between px-6 md:px-10 z-30 shrink-0">
+                <div class="flex items-center gap-4">
+                    <button id="open-sidebar"
+                        class="md:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 transition active:scale-95 magnetic-btn">
+                        <i class="fa-solid fa-bars-staggered text-xl"></i>
+                    </button>
+                    <div>
+                        <h2 id="page-title-header"
+                            class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-cyan-500 dark:from-white dark:to-blue-200">
+                            الرئيسية</h2>
+                        <div id="breadcrumb" class="breadcrumb mt-1 hidden md:flex">
+                            <!-- Breadcrumb injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 md:gap-4">
+                    <button id="conn-btn"
+                        class="conn-btn w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 relative overflow-hidden transition active:scale-90 magnetic-btn"
+                        title="حالة الاتصال">
+                        <i class="fa-solid fa-wifi action-icon-primary icon-wifi text-emerald-400 text-lg"></i>
+                        <i class="fa-solid fa-wifi action-icon-secondary icon-slash text-rose-500 text-lg"></i>
+                    </button>
+
+                    <button id="theme-btn"
+                        class="theme-btn w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 relative overflow-hidden transition active:scale-90 magnetic-btn"
+                        title="تبديل المظهر">
+                        <i class="fa-solid fa-sun action-icon-primary icon-sun text-yellow-400 text-lg"></i>
+                        <i class="fa-solid fa-moon action-icon-secondary icon-moon text-blue-300 text-lg"></i>
+                    </button>
+
+                    <button id="notif-btn"
+                        class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition relative active:scale-90 magnetic-btn"
+                        title="الإشعارات">
+                        <i class="fa-regular fa-bell text-lg text-gray-300"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Section -->
+            <div id="app-content" class="flex-1 overflow-y-auto p-4 md:p-8 relative scroll-smooth custom-scrollbar">
+                <div class="pull-refresh-indicator" id="pull-refresh-indicator">
+                    <i class="fa-solid fa-arrow-rotate-right text-blue-500"></i>
+                </div>
+                <!-- Page content will be mounted here -->
+            </div>
+
+            <!-- Bottom Navigation -->
+            <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 md:hidden z-40 nav-hidden m-4 mb-4">
+                <div
+                    class="glass-panel rounded-2xl px-6 py-3 flex justify-between items-center shadow-2xl shadow-black/50 bg-opacity-95 backdrop-blur-xl border border-white/10">
+                    <button id="nav-home"
+                        class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition magnetic-btn">
+                        <i class="fa-solid fa-house text-lg"></i>
+                        <span class="text-[10px]">الرئيسية</span>
+                    </button>
+                    <button id="nav-menu"
+                        class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition magnetic-btn">
+                        <i class="fa-solid fa-bars-staggered text-lg"></i>
+                        <span class="text-[10px]">القائمة</span>
+                    </button>
+                    <button id="center-action-btn"
+                        class="w-14 h-14 -mt-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/40 active:scale-90 transition transform border-4 dark:border-[#0f172a] dark:oled:border-black border-white magnetic-btn">
+                        <i class="fa-solid fa-bolt text-xl"></i>
+                    </button>
+                    <button id="nav-bookmarks"
+                        class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition magnetic-btn">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                        <span class="text-[10px]">محفوظات</span>
+                    </button>
+                    <button id="nav-settings"
+                        class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition magnetic-btn">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                        <span class="text-[10px]">إعدادات</span>
+                    </button>
+                </div>
+            </nav>
+
+        </main>
+    </div>
+    <!-- ==================== Pages Templates ==================== -->
+
+    <!-- Home Page Template -->
+    <template id="page-home">
+        <div class="container mx-auto max-w-6xl space-y-8 pb-24">
+            <!-- Hero Card -->
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden group scroll-animate">
+                <!-- Decorative background -->
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-600/8 via-transparent to-cyan-500/6 pointer-events-none"></div>
+                <div class="absolute -left-12 -bottom-12 w-48 h-48 rounded-full bg-blue-500/5 blur-3xl pointer-events-none"></div>
+                <i class="fa-solid fa-rocket absolute -bottom-6 -left-6 text-[8rem] text-blue-500/[0.04] rotate-45 group-hover:scale-105 transition duration-700 pointer-events-none"></i>
+
+                <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <!-- Greeting -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/25 flex-shrink-0">
+                            <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-2xl font-black leading-tight">
+                                مرحباً، يا بطل <span id="home-greeting-emoji">👋</span>
+                            </h2>
+                            <p id="home-date" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium"></p>
+                        </div>
+                    </div>
+                    <!-- Status pills -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <div id="conn-status-home"
+                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold
+                                   bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+                            <span>متصل</span>
+                        </div>
+                        <button onclick="App.Router.go('notifications')"
+                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold
+                                   bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20
+                                   hover:bg-amber-500/20 transition magnetic-btn">
+                            <i class="fa-solid fa-bell text-xs animate-pulse"></i>
+                            آخر التحديثات
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Motivational message -->
+                <div class="relative z-10 pt-4 border-t border-gray-200/50 dark:border-white/5">
+                    <p id="home-motivate" class="text-sm text-gray-600 dark:text-blue-100/65 leading-relaxed max-w-2xl"></p>
+                </div>
+            </div>
+
+            <script>
+            (function(){
+                var d = new Date(), h = d.getHours();
+                var days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+                var months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+                var dateEl = document.getElementById('home-date');
+                if (dateEl) dateEl.textContent = days[d.getDay()] + '، ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+                var emojiEl = document.getElementById('home-greeting-emoji');
+                if (emojiEl) emojiEl.textContent = h >= 5 && h < 12 ? '🌅' : h >= 12 && h < 17 ? '☀️' : h >= 17 && h < 21 ? '🌆' : '🌙';
+
+                var cs = document.getElementById('conn-status-home');
+                if (cs && !navigator.onLine) {
+                    cs.className = cs.className.replace(/emerald/g, 'red');
+                    cs.querySelector('span').className = cs.querySelector('span').className.replace(/emerald/g, 'red');
+                    cs.querySelectorAll('span')[1].textContent = 'غير متصل';
+                }
+
+                var msgs = [
+                    'استغل يومك الجديد، كل درس تراجعه اليوم هو خطوة نحو النجاح. 💪',
+                    'الاثنين بداية الأسبوع — ضع أهدافك وابدأ قوياً! 🎯',
+                    'الثلاثاء الإنجاز — راجع محاضراتك وتقدّم خطوة إضافية. 📚',
+                    'منتصف الأسبوع! الالتزام هنا هو ما يفرّق المتميز عن غيره. ✅',
+                    'الخميس — استعد للأسبوع القادم وراجع كل ما أنجزته. 🔥',
+                    'الجمعة — مراجعة خفيفة تُثبّت المعلومات وتريح العقل. 🌟',
+                    'السبت — وقت مثالي للمذاكرة العميقة والتحضير الجيد. 🚀'
+                ];
+                var motivEl = document.getElementById('home-motivate');
+                if (motivEl) motivEl.textContent = msgs[d.getDay()];
+            })();
+            </script>
+            <script>
+            (function(){
+                var d = new Date();
+                var days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+                var months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+                var el = document.getElementById('home-date');
+                if(el) el.textContent = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+                var cs = document.getElementById('conn-status-home');
+                if(cs && !navigator.onLine){
+                    cs.className = cs.className.replace(/emerald/g,'red');
+                    cs.querySelector('span').className = cs.querySelector('span').className.replace(/emerald/g,'red');
+                    cs.querySelector('span').nextSibling.textContent = ' غير متصل';
+                }
+            })();
+            </script>
+
+            <!-- Quick Access Section -->
+            <section class="scroll-animate">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-yellow-400"></i> وصول سريع
+                    </h3>
+                    <span id="show-all-pages"
+                        class="text-xs text-blue-500 cursor-pointer hover:text-blue-400 transition bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20 magnetic-btn">عرض
+                        الكل</span>
+                </div>
+                <div class="swiper mySwiper w-full">
+                    <div class="swiper-wrapper" id="quick-access-slides">
+                        <!-- Slides will be injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats & Recent Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Recent Files -->
+                <section class="glass-panel rounded-2xl p-5 col-span-1 md:col-span-2 scroll-animate">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-blue-400"></i> أضيف حديثاً
+                    </h3>
+                    <div class="space-y-3" id="recent-files-list">
+                        <!-- Recent files will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Stats Card -->
+                <section class="glass-panel rounded-2xl p-5 flex flex-col justify-between scroll-animate">
+                    <div id="stats-container">
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-cyan-400"></i> إحصائياتي
+                        </h3>
+                        <canvas id="stats-chart" width="200" height="200"></canvas>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Notifications Section -->
+            <section class="glass-panel rounded-2xl p-5 scroll-animate">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-amber-400"></i> آخر التحديثات
+                </h3>
+                <div class="space-y-3" id="notifications-list">
+                    <!-- Notifications injected here -->
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <!-- Lectures Page Template -->
+    <template id="page-lectures">
+        <div class="container mx-auto max-w-7xl pb-24">
+            <!-- Breadcrumb + Search Bar -->
+            <div class="glass-panel rounded-2xl px-3 py-2.5 mb-5 scroll-animate flex items-center gap-2">
+                <!-- Breadcrumb icons (injected by JS) -->
+                <div id="lectures-breadcrumb" class="flex items-center gap-1 min-w-0 flex-1 overflow-x-auto no-scrollbar"></div>
+                <!-- Search -->
+                <div class="relative flex-shrink-0 mr-auto">
+                    <i class="fa-solid fa-magnifying-glass absolute top-1/2 -translate-y-1/2 right-2.5 text-gray-400 text-[11px] pointer-events-none"></i>
+                    <input id="lectures-search" type="text" placeholder="بحث..."
+                        class="pr-7 pl-3 py-1.5 rounded-lg text-xs font-medium w-32 focus:w-44
+                               bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10
+                               focus:border-blue-400/60 focus:bg-blue-500/5 focus:outline-none
+                               text-gray-700 dark:text-gray-200 placeholder:text-gray-400
+                               transition-all duration-300">
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="lectures-error" class="glass-panel rounded-2xl p-8 text-center hidden scroll-animate">
+                <div
+                    class="w-20 h-20 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <i class="fa-solid fa-wifi-slash text-3xl text-red-500"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">لا يوجد اتصال بالإنترنت</h3>
+                <p class="text-gray-500 dark:text-gray-300 mb-4 text-sm">تحقق من الاتصال بالإنترنت أو استعرض البيانات
+                    المحفوظة</p>
+                <button onclick="retryLecturesConnection()"
+                    class="px-6 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition shadow-lg hover:shadow-xl">
+                    <i class="fa-solid fa-rotate-right ml-2"></i>
+                    إعادة المحاولة
+                </button>
+            </div>
+
+            <!-- Lectures Grid -->
+            <div id="lectures-container">
+                <!-- Lectures will be injected here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Summaries Template-->
+    <template id="page-summaries">
+        <div class="container mx-auto max-w-6xl pb-24">
+            <!-- Breadcrumb + Search + Stats Bar -->
+            <div class="glass-panel rounded-2xl px-3 py-2.5 mb-5 scroll-animate flex items-center gap-2">
+                <!-- Breadcrumb icons (injected by JS) -->
+                <div id="summaries-breadcrumb" class="flex items-center gap-1 min-w-0 flex-1 overflow-x-auto no-scrollbar"></div>
+                <!-- Stats -->
+                <div id="summaries-stats" class="flex-shrink-0"></div>
+                <!-- Search -->
+                <div class="relative flex-shrink-0">
+                    <i class="fa-solid fa-magnifying-glass absolute top-1/2 -translate-y-1/2 right-2.5 text-gray-400 text-[11px] pointer-events-none"></i>
+                    <input id="summaries-search" type="text" placeholder="بحث..."
+                        class="pr-7 pl-3 py-1.5 rounded-lg text-xs font-medium w-32 focus:w-44
+                               bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10
+                               focus:border-cyan-400/60 focus:bg-cyan-500/5 focus:outline-none
+                               text-gray-700 dark:text-gray-200 placeholder:text-gray-400
+                               transition-all duration-300">
+                </div>
+            </div>
+
+            <!-- Error State-->
+            <div id="summaries-error" class="glass-panel rounded-2xl p-8 text-center hidden scroll-animate">
+                <div
+                    class="w-20 h-20 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <i class="fa-solid fa-wifi-slash text-3xl text-red-500"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">لا يوجد اتصال بالإنترنت</h3>
+                <p class="text-gray-500 dark:text-gray-300 mb-4 text-sm">تحقق من الاتصال بالإنترنت أو استعرض البيانات
+                    المحفوظة</p>
+                <button onclick="retrySummariesConnection()"
+                    class="px-6 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium transition shadow-lg hover:shadow-xl">
+                    <i class="fa-solid fa-rotate-right ml-2"></i>
+                    إعادة المحاولة
+                </button>
+            </div>
+
+            <!-- Summaries List -->
+            <div id="summaries-container">
+                <!-- Summaries will be injected here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Links Template-->
+    <template id="page-links">
+        <div class="container mx-auto max-w-6xl pb-24 space-y-6">
+            <!-- Content will be loaded by links.js -->
+        </div>
+    </template>
+
+    <!-- Notifications Page Template -->
+    <template id="page-notifications">
+        <div class="container mx-auto max-w-4xl pb-24">
+
+            <!-- Action Bar -->
+            <div class="flex items-center justify-between mb-5 px-1">
+                <span id="unread-count-label" class="text-sm text-gray-500 dark:text-gray-400 font-medium tabular-nums"></span>
+                <button id="mark-all-read"
+                    class="group flex items-center gap-2 px-3.5 py-2 rounded-xl
+                           bg-white dark:bg-white/5
+                           border border-gray-200/80 dark:border-white/10
+                           hover:border-blue-400/50 dark:hover:border-blue-500/40
+                           hover:bg-blue-50 dark:hover:bg-blue-500/8
+                           shadow-sm hover:shadow-md
+                           text-gray-500 dark:text-gray-400
+                           hover:text-blue-600 dark:hover:text-blue-400
+                           text-xs font-semibold transition-all duration-200 magnetic-btn
+                           disabled:opacity-35 disabled:pointer-events-none">
+                    <span class="w-4 h-4 rounded-md bg-gray-100 dark:bg-white/10 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20
+                                 flex items-center justify-center transition-colors flex-shrink-0">
+                        <i class="fa-solid fa-check-double text-[9px] text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </span>
+                    تحديد الكل كمقروء
+                </button>
+            </div>
+
+            <!-- Notifications List -->
+            <div class="space-y-3" id="notifications-full-list">
+                <!-- Notifications injected here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Videos Page Template -->
+    <template id="page-videos">
+        <div class="container mx-auto max-w-7xl pb-24 space-y-6">
+            <!-- Content will be rendered by videos.js -->
+        </div>
+    </template>
+
+    <!-- Schedules Page Template -->
+    <template id="page-schedules">
+        <div class="container mx-auto max-w-7xl pb-24 space-y-6">
+            <!-- Content will be rendered by schedules.js -->
+        </div>
+    </template>
+
+    <!-- Buildings Page Template -->
+    <template id="page-buildings">
+        <div class="container mx-auto max-w-7xl pb-24 space-y-6">
+            <!-- Content will be rendered by buildings.js -->
+        </div>
+    </template>
+
+    <!-- Bookmarks Page Template -->
+    <template id="page-bookmarks">
+        <div class="container mx-auto max-w-6xl pb-24 space-y-6">
+            <!-- Content will be rendered by bookmarks.js -->
+        </div>
+    </template>
+
+
+    <!-- Settings Page Template -->
+    <template id="page-settings">
+        <div class="container mx-auto max-w-2xl space-y-6 pb-24 ">
+            <!-- Profile Card -->
+            <div class="glass-panel rounded-2xl p-6 flex items-center gap-4 scroll-animate">
+                <img src="https://ui-avatars.com/api/?name=Student&background=667eea&color=fff&size=128" alt="User"
+                    class="w-20 h-20 rounded-full border-4 border-blue-500/20">
+                <div>
+                    <h3 class="text-xl font-bold">طالب جامعي</h3>
+                    <p class="text-gray-400 text-sm"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0c7f7879686962784c7962657a697e7f65787522696879227f6d">[email&#160;protected]</a></p>
+                    <button
+                        class="mt-2 text-xs bg-blue-600/20 text-blue-500 px-3 py-1 rounded-full hover:bg-blue-600/40 transition magnetic-btn">تعديل</button>
+                    <i
+                        class="fa-solid fa-gear absolute -right-6 -bottom-6 text-[10rem] opacity-[0.03] rotate-12 pointer-events-none"></i>
+
+                </div>
+            </div>
+
+            <!-- Display Settings -->
+            <div class="glass-panel rounded-2xl p-6 scroll-animate">
+                <h3 class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-white/5 pb-2">المظهر والعرض</h3>
+
+                <!-- Dark Mode Toggle -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">الوضع الليلي</p>
+                            <p class="text-xs text-gray-400">واجهة داكنة مريحة للعين</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="dark-mode-toggle" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- OLED Mode Toggle -->
+                <div class="flex items-center justify-between" id="oled-toggle-container">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-black border border-gray-700 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">وضع OLED (أسود نقي)</p>
+                            <p class="text-xs text-gray-400">توفير طاقة البطارية وتباين عالي</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="oled-mode-toggle" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black border peer-checked:border-white/50">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Performance Settings -->
+            <div class="glass-panel rounded-2xl p-6 scroll-animate">
+                <h3 class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-white/5 pb-2">الأداء والتأثيرات
+                </h3>
+
+                <!-- Animations Toggle -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">التأثيرات المتقدمة</p>
+                            <p class="text-xs text-gray-400">تفعيل الحركات والانتقالات</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="animations-toggle" class="sr-only peer" checked>
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Particles Toggle -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                            <i class="fa-solid fa-sparkles"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">الخلفية المتحركة</p>
+                            <p class="text-xs text-gray-400">تأثيرات الجزيئات في الخلفية</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="particles-toggle" class="sr-only peer" checked>
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Storage Management -->
+            <div class="glass-panel rounded-2xl p-6 scroll-animate">
+                <h3 class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-white/5 pb-2">إدارة التخزين</h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-bold">مسح البيانات المحفوظة</p>
+                        <p class="text-xs text-gray-400">حذف الملفات المخزنة للعمل بدون إنترنت</p>
+                    </div>
+                    <button id="clear-cache-btn"
+                        class="px-4 py-2 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 text-sm font-bold transition magnetic-btn">
+                        <i class="fa-solid fa-trash-can ml-1"></i>
+                        مسح
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reset Zone -->
+            <div class="glass-panel rounded-2xl p-6 border border-red-500/20 bg-red-500/5 scroll-animate">
+                <h3 class="text-lg font-bold mb-4 text-red-500">منطقة الخطر</h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-bold">إعادة ضبط المصنع</p>
+                        <p class="text-xs text-gray-400">مسح كافة التفضيلات والعودة للوضع الافتراضي</p>
+                    </div>
+                    <button id="reset-settings-btn"
+                        class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white text-sm font-bold transition shadow-lg shadow-red-500/20 magnetic-btn">
+                        إعادة تعيين
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center text-xs text-gray-500 pt-4">
+                Dof3atna App v7.0 | Offline Support + Clean Architecture
+            </div>
+        </div>
+    </template>
+
+    <!-- Default Page Template -->
+    <template id="page-default">
+        <div class="container mx-auto max-w-5xl h-full flex flex-col pb-24">
+            <!-- Page Header Card -->
+            <div id="page-header-card"
+                class="glass-panel rounded-3xl p-8 mb-6 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-right relative overflow-hidden scroll-animate">
+                <!-- Content injected dynamically -->
+            </div>
+
+            <!-- Coming Soon Card -->
+            <div
+                class="flex-1 glass-panel rounded-3xl flex flex-col items-center justify-center p-10 text-center border-dashed border-2 border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-white/[0.02] scroll-animate">
+                <div
+                    class="w-20 h-20 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center mb-4 animate-pulse">
+                    <i class="fa-solid fa-layer-group text-2xl text-gray-400"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 dark:text-gray-300 mb-2">قريباً</h3>
+                <p class="text-xs text-gray-400 mb-6">نعمل حالياً على إضافة المحتوى</p>
+                <button id="back-home-btn"
+                    class="px-6 py-2 rounded-full text-sm border border-gray-300 dark:border-white/20 hover:bg-white/5 transition magnetic-btn">
+                    العودة للرئيسية
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- ==================== Scripts ==================== -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- App Scripts - New Structure -->
+    <script src="js/pages/home/skeleton-loader.js"></script>
+    <script src="js/core/namespace.js"></script>
+    <script src="js/core/constants.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/router.js"></script>
+
+    <script src="js/utils/utils.js"></script>
+    <script src="js/utils/cache.js"></script>
+    <script src="js/utils/api.js"></script>
+
+    <script src="js/ui/ui.js"></script>
+    <script src="js/ui/effects.js"></script>
+    <script src="js/ui/toast.js"></script>
+
+    <script src="js/pages/home/home.js"></script>
+    <script src="js/pages/lectures/lectures.js"></script>
+    <script src="js/pages/summaries/summaries.js"></script>
+    <script src="js/pages/links/links.js"></script>
+    <script src="js/pages/videos/videos.js"></script>
+    <script src="js/pages/schedules/schedules.js"></script>
+    <script src="js/pages/buildings/buildings.js"></script>
+    <script src="js/pages/bookmarks/bookmarks.js"></script>
+    <script src="js/pages/settings/settings.js"></script>
+    <script src="js/pages/notifications/notifications.js"></script>
+    <script src="js/pages/default/default.js"></script>
+
+    <script src="js/core/init.js"></script>
+
+</body>
+
+</html>

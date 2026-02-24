@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء إشعار — Dof3atna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #0a0f1a;
+            color: #e2e8f0;
+        }
+
+        /* ── Mesh background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139,92,246,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 60% 30%, rgba(6,182,212,0.07) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page-wrap { position: relative; z-index: 1; }
+
+        /* ── Glass panel ── */
+        .glass {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* ── Inputs ── */
+        .field {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 0.875rem;
+            padding: 0.8rem 1rem;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, background 0.2s;
+            outline: none;
+        }
+        .field::placeholder { color: rgba(255,255,255,0.25); }
+        .field:focus {
+            border-color: rgba(59,130,246,0.6);
+            background: rgba(59,130,246,0.06);
+        }
+
+        /* ── Icon picker ── */
+        .icon-btn {
+            width: 48px; height: 48px;
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.5);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+        }
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+        .icon-btn.active {
+            background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3));
+            border-color: rgba(59,130,246,0.7);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(59,130,246,0.25);
+        }
+
+        /* ── Color picker ── */
+        .color-dot {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .color-dot:hover { transform: scale(1.15); }
+        .color-dot.active {
+            border-color: #fff;
+            transform: scale(1.2);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+        }
+
+        /* ── Category chips ── */
+        .chip {
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.55);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .chip:hover {
+            border-color: rgba(255,255,255,0.25);
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+        .chip.active {
+            background: rgba(59,130,246,0.2);
+            border-color: rgba(59,130,246,0.6);
+            color: #93c5fd;
+        }
+
+        /* ── Preview card ── */
+        .preview-card {
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            transition: all 0.3s;
+        }
+        .preview-card.has-content {
+            border-color: rgba(59,130,246,0.3);
+            background: rgba(59,130,246,0.05);
+        }
+
+        /* ── JSON output ── */
+        #jsonOutput {
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.875rem;
+            padding: 1.25rem;
+            color: #7dd3fc;
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* ── Submit btn ── */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            font-weight: 700;
+            border-radius: 0.875rem;
+            padding: 0.85rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(59,130,246,0.35);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            border-radius: 0.875rem;
+            padding: 0.85rem 1.25rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .btn-copy {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+            font-weight: 700;
+            border-radius: 0.75rem;
+            padding: 0.55rem 1rem;
+            border: 1px solid rgba(16,185,129,0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.8rem;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .btn-copy:hover {
+            background: rgba(16,185,129,0.25);
+            border-color: rgba(16,185,129,0.5);
+        }
+
+        /* ── Section label ── */
+        .section-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .section-label i { font-size: 0.7rem; }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(to left, transparent, rgba(255,255,255,0.08), transparent);
+            margin: 1.5rem 0;
+        }
+
+        /* ── Char counter ── */
+        .char-bar {
+            height: 2px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 9999px;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+        .char-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(to left, #3b82f6, #8b5cf6);
+            transition: width 0.2s;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 9999px; }
+
+        /* ── Animation ── */
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fade-up 0.4s ease both; }
+        .fade-up-d1 { animation-delay: 0.05s; }
+        .fade-up-d2 { animation-delay: 0.1s; }
+        .fade-up-d3 { animation-delay: 0.15s; }
+
+        select.field option { background: #0f172a; }
+    </style>
+</head>
+<body class="p-4 md:p-8 pb-16">
+<div class="page-wrap max-w-3xl mx-auto">
+
+    <!-- ── Header ── -->
+    <div class="flex items-center gap-4 mb-8 fade-up">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
+            <i class="fa-solid fa-bell text-white text-lg"></i>
+        </div>
+        <div>
+            <h1 class="text-2xl font-black text-white leading-tight">إنشاء إشعار</h1>
+            <p class="text-xs text-white/40 mt-0.5">أنشئ إشعاراً جديداً وانسخ الـ JSON ليُضاف للملف</p>
+        </div>
+    </div>
+
+    <!-- ── Main Grid ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
+
+        <!-- ── Form ── -->
+        <div class="lg:col-span-3 glass rounded-2xl p-5 md:p-6 fade-up fade-up-d1">
+            <form id="notifForm">
+
+                <!-- Title -->
+                <div class="mb-4">
+                    <div class="section-label"><i class="fa-solid fa-heading"></i> العنوان</div>
+                    <input id="inp-title" type="text" class="field" placeholder="مثال: 🎉 تحديث جديد" required>
+                </div>
+
+                <!-- Message -->
+                <div class="mb-4">
+                    <div class="section-label"><i class="fa-solid fa-align-right"></i> الرسالة</div>
+                    <textarea id="inp-message" rows="3" class="field" placeholder="اكتب نص الإشعار هنا..." required></textarea>
+                    <div class="flex items-center justify-between mt-1.5">
+                        <div class="char-bar flex-1 ml-3"><div id="charFill" class="char-bar-fill" style="width:0%"></div></div>
+                        <span id="charNum" class="text-[11px] text-white/30">0 / 200</span>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Icon -->
+                <div class="mb-4">
+                    <div class="section-label"><i class="fa-solid fa-icons"></i> الأيقونة</div>
+                    <div id="iconGrid" class="flex flex-wrap gap-2">
+                        <!-- generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="mb-4">
+                    <div class="section-label"><i class="fa-solid fa-palette"></i> اللون</div>
+                    <div id="colorGrid" class="flex flex-wrap gap-3 items-center">
+                        <!-- generated by JS -->
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Category -->
+                <div class="mb-5">
+                    <div class="section-label"><i class="fa-solid fa-tag"></i> الفئة</div>
+                    <div id="categoryChips" class="flex flex-wrap gap-2">
+                        <!-- generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <button type="submit" class="btn-primary flex-1">
+                        <i class="fa-solid fa-wand-magic-sparkles ml-1.5"></i>
+                        إنشاء الإشعار
+                    </button>
+                    <button type="button" id="resetBtn" class="btn-ghost" title="إعادة تعيين">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ── Right Column: Preview + Output ── -->
+        <div class="lg:col-span-2 flex flex-col gap-5">
+
+            <!-- Preview -->
+            <div class="glass rounded-2xl p-5 fade-up fade-up-d2">
+                <div class="section-label mb-3"><i class="fa-solid fa-eye"></i> معاينة مباشرة</div>
+                <div id="previewCard" class="preview-card">
+                    <div class="flex items-start gap-3">
+                        <div id="previewIconWrap"
+                             class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
+                            <i id="previewIconEl" class="fa-solid fa-bell text-blue-500"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <h4 id="previewTitle" class="font-bold text-sm text-white/90 truncate">عنوان الإشعار</h4>
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 flex-shrink-0">
+                                    <span class="w-1 h-1 rounded-full bg-blue-400 animate-pulse inline-block"></span>
+                                    جديد
+                                </span>
+                            </div>
+                            <p id="previewMsg" class="text-[11px] text-white/50 leading-relaxed line-clamp-2">نص الرسالة سيظهر هنا...</p>
+                            <div class="flex items-center gap-2 mt-1.5">
+                                <span class="text-[10px] text-white/30 flex items-center gap-1">
+                                    <i class="fa-regular fa-clock"></i> الآن
+                                </span>
+                                <span id="previewCategory" class="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/15">تحديث</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Output -->
+            <div class="glass rounded-2xl p-5 flex-1 fade-up fade-up-d3">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="section-label mb-0"><i class="fa-solid fa-code"></i> كود JSON</div>
+                    <button id="copyBtn" class="btn-copy">
+                        <i class="fa-solid fa-copy"></i> نسخ
+                    </button>
+                </div>
+                <pre id="jsonOutput">// سيظهر هنا بعد الإنشاء</pre>
+
+                <!-- Full array hint -->
+                <div class="mt-3 p-3 rounded-xl bg-amber-500/8 border border-amber-500/20 text-[11px] text-amber-400/80 leading-relaxed">
+                    <i class="fa-solid fa-circle-info ml-1"></i>
+                    أضف هذا الكائن داخل مصفوفة الـ JSON الخاصة بالمشروع.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════════════════════════
+const ICONS = [
+    'fa-bell','fa-rocket','fa-book-open','fa-check-circle',
+    'fa-exclamation-triangle','fa-wrench','fa-lightbulb',
+    'fa-star','fa-fire','fa-heart','fa-graduation-cap',
+    'fa-bullhorn','fa-thumbs-up','fa-gift','fa-bolt',
+    'fa-shield','fa-info-circle','fa-flag','fa-clock','fa-wifi'
+];
+
+const COLORS = [
+    { id:'blue',    hex:'#3b82f6' },
+    { id:'cyan',    hex:'#06b6d4' },
+    { id:'emerald', hex:'#10b981' },
+    { id:'green',   hex:'#22c55e' },
+    { id:'yellow',  hex:'#eab308' },
+    { id:'amber',   hex:'#f59e0b' },
+    { id:'orange',  hex:'#f97316' },
+    { id:'red',     hex:'#ef4444' },
+    { id:'pink',    hex:'#ec4899' },
+    { id:'purple',  hex:'#a855f7' },
+    { id:'indigo',  hex:'#6366f1' },
+    { id:'teal',    hex:'#14b8a6' },
+];
+
+const CATEGORIES = [
+    { id:'update',       label:'تحديث',    color:'blue'   },
+    { id:'content',      label:'محتوى',    color:'green'  },
+    { id:'maintenance',  label:'صيانة',    color:'orange' },
+    { id:'fix',          label:'إصلاح',    color:'emerald'},
+    { id:'tips',         label:'نصائح',    color:'purple' },
+    { id:'announcement', label:'إعلان',    color:'pink'   },
+];
+
+const CAT_BADGE_COLORS = {
+    update:'text-blue-400 bg-blue-500/10 border-blue-500/20',
+    content:'text-green-400 bg-green-500/10 border-green-500/20',
+    maintenance:'text-orange-400 bg-orange-500/10 border-orange-500/20',
+    fix:'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+    tips:'text-purple-400 bg-purple-500/10 border-purple-500/20',
+    announcement:'text-pink-400 bg-pink-500/10 border-pink-500/20',
+};
+
+const MAX_CHARS = 200;
+
+// ════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════
+let state = { icon:'fa-bell', color:'blue', category:'update' };
+
+// ════════════════════════════════════════════════════════════
+//  BUILD UI
+// ════════════════════════════════════════════════════════════
+function buildIcons() {
+    const grid = document.getElementById('iconGrid');
+    grid.innerHTML = ICONS.map(ic => `
+        <button type="button" class="icon-btn${ic===state.icon?' active':''}" data-icon="${ic}" title="${ic}">
+            <i class="fa-solid ${ic}"></i>
+        </button>`).join('');
+    grid.querySelectorAll('.icon-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            state.icon = this.dataset.icon;
+            grid.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updatePreview();
+        });
+    });
+}
+
+function buildColors() {
+    const grid = document.getElementById('colorGrid');
+    grid.innerHTML = COLORS.map(c => `
+        <button type="button" class="color-dot${c.id===state.color?' active':''}"
+                style="background:${c.hex}" data-color="${c.id}" title="${c.id}"></button>`).join('');
+    grid.querySelectorAll('.color-dot').forEach(btn => {
+        btn.addEventListener('click', function() {
+            state.color = this.dataset.color;
+            grid.querySelectorAll('.color-dot').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updatePreview();
+        });
+    });
+}
+
+function buildCategories() {
+    const wrap = document.getElementById('categoryChips');
+    wrap.innerHTML = CATEGORIES.map(c => `
+        <button type="button" class="chip${c.id===state.category?' active':''}" data-cat="${c.id}">
+            ${c.label}
+        </button>`).join('');
+    wrap.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', function() {
+            state.category = this.dataset.cat;
+            wrap.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updatePreview();
+        });
+    });
+}
+
+// ════════════════════════════════════════════════════════════
+//  PREVIEW
+// ════════════════════════════════════════════════════════════
+function updatePreview() {
+    const title   = document.getElementById('inp-title').value.trim()   || 'عنوان الإشعار';
+    const message = document.getElementById('inp-message').value.trim() || 'نص الرسالة سيظهر هنا...';
+    const cat     = CATEGORIES.find(c => c.id === state.category) || CATEGORIES[0];
+
+    document.getElementById('previewTitle').textContent = title;
+    document.getElementById('previewMsg').textContent   = message;
+
+    // icon wrap color
+    const iconWrap = document.getElementById('previewIconWrap');
+    iconWrap.className = `w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center bg-${state.color}-500/10 border border-${state.color}-500/20`;
+    const iconEl = document.getElementById('previewIconEl');
+    iconEl.className = `fa-solid ${state.icon} text-${state.color}-500`;
+
+    // category badge
+    const catBadge = document.getElementById('previewCategory');
+    catBadge.textContent = cat.label;
+    catBadge.className = `text-[10px] px-1.5 py-0.5 rounded-full border ${CAT_BADGE_COLORS[state.category] || ''}`;
+
+    // card border
+    const card = document.getElementById('previewCard');
+    const hasContent = document.getElementById('inp-title').value.trim();
+    card.className = 'preview-card' + (hasContent ? ' has-content' : '');
+}
+
+// ════════════════════════════════════════════════════════════
+//  CHAR COUNTER
+// ════════════════════════════════════════════════════════════
+document.getElementById('inp-message').addEventListener('input', function() {
+    const len = this.value.length;
+    const pct = Math.min(len / MAX_CHARS * 100, 100);
+    document.getElementById('charNum').textContent  = `${len} / ${MAX_CHARS}`;
+    document.getElementById('charFill').style.width = pct + '%';
+    document.getElementById('charFill').style.background =
+        pct > 85 ? 'linear-gradient(to left,#ef4444,#f97316)' :
+        pct > 60 ? 'linear-gradient(to left,#f59e0b,#eab308)' :
+                   'linear-gradient(to left,#3b82f6,#8b5cf6)';
+    updatePreview();
+});
+document.getElementById('inp-title').addEventListener('input', updatePreview);
+
+// ════════════════════════════════════════════════════════════
+//  GENERATE ID
+// ════════════════════════════════════════════════════════════
+function generateId() {
+    return 'notif_' + Date.now().toString(36);
+}
+
+// ════════════════════════════════════════════════════════════
+//  FORM SUBMIT
+// ════════════════════════════════════════════════════════════
+document.getElementById('notifForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const notif = {
+        id:        generateId(),
+        title:     document.getElementById('inp-title').value.trim(),
+        message:   document.getElementById('inp-message').value.trim(),
+        icon:      state.icon,
+        color:     state.color,
+        timestamp: new Date().toISOString(),
+        category:  state.category
+    };
+
+    const json = JSON.stringify(notif, null, 2);
+    const output = document.getElementById('jsonOutput');
+    output.textContent = json;
+
+    // scroll to output
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // highlight copy button
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.style.animation = 'none';
+    copyBtn.classList.add('!bg-emerald-500/25', '!border-emerald-400/50', '!text-emerald-300');
+    setTimeout(() => copyBtn.classList.remove('!bg-emerald-500/25', '!border-emerald-400/50', '!text-emerald-300'), 2500);
+});
+
+// ════════════════════════════════════════════════════════════
+//  RESET
+// ════════════════════════════════════════════════════════════
+document.getElementById('resetBtn').addEventListener('click', function() {
+    document.getElementById('notifForm').reset();
+    document.getElementById('charNum').textContent  = '0 / 200';
+    document.getElementById('charFill').style.width = '0%';
+    document.getElementById('jsonOutput').textContent = '// سيظهر هنا بعد الإنشاء';
+    state = { icon:'fa-bell', color:'blue', category:'update' };
+    buildIcons(); buildColors(); buildCategories();
+    updatePreview();
+});
+
+// ════════════════════════════════════════════════════════════
+//  COPY
+// ════════════════════════════════════════════════════════════
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const text = document.getElementById('jsonOutput').textContent;
+    if (text.startsWith('//')) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = this;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+        setTimeout(() => btn.innerHTML = orig, 2000);
+    });
+});
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+buildIcons();
+buildColors();
+buildCategories();
+updatePreview();
+</script>
+</body>
+</html>
