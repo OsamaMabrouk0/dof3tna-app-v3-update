@@ -1,6 +1,10 @@
 {
-  "version": 3,
+  "version": 2,
   "files": [
+        {
+      "name": "index.html",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/index.html"
+    },
     {
       "name": "css/skeleton-loader.css",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/skeleton-loader.css"
