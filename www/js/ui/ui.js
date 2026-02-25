@@ -167,6 +167,11 @@
         open: function() {
             this.isOpen = true;
             document.body.style.overflow = 'hidden';
+
+            // ✅ أعلِم Android بأن القائمة فُتحت — عطّل Pull-to-Refresh
+            if (window.Android && window.Android.setSwipeRefreshEnabled) {
+                window.Android.setSwipeRefreshEnabled(false);
+            }
             
             // pushState حتى يُمسك BackButtonManager هذا الحدث
             if (window.history && window.history.pushState) {
@@ -184,6 +189,12 @@
         close: function() {
             this.isOpen = false;
             document.body.style.overflow = '';
+
+            // ✅ أعلِم Android بأن القائمة أُغلقت — أعِد تفعيل Pull-to-Refresh
+            if (window.Android && window.Android.setSwipeRefreshEnabled) {
+                window.Android.setSwipeRefreshEnabled(true);
+            }
+
             this.overlay.classList.remove('opacity-100');
             this.sheet.style.transform = 'translateY(100%)';
             setTimeout(() => {
