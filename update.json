@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "files": [
     {
       "name": "index.html",
@@ -8,6 +8,10 @@
     {
       "name": "css/skeleton-loader.css",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/skeleton-loader.css"
+    },
+    {
+      "name": "css/home-cards.css",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/home-cards.css"
     },
     {
       "name": "css/variables.css",
@@ -38,6 +42,10 @@
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/css/toast.css"
     },
     {
+      "name": "js/pages/home/skeleton-loader.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/home/skeleton-loader.js"
+    },
+    {
       "name": "js/core/namespace.js",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/namespace.js"
     },
@@ -52,10 +60,6 @@
     {
       "name": "js/core/router.js",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/router.js"
-    },
-    {
-      "name": "js/core/init.js",
-      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/init.js"
     },
     {
       "name": "js/utils/utils.js",
@@ -80,10 +84,6 @@
     {
       "name": "js/ui/toast.js",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/ui/toast.js"
-    },
-    {
-      "name": "js/pages/home/skeleton-loader.js",
-      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/home/skeleton-loader.js"
     },
     {
       "name": "js/pages/home/home.js",
@@ -114,10 +114,6 @@
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/buildings/buildings.js"
     },
     {
-      "name": "js/pages/bookmarks/bookmarks.js",
-      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/bookmarks/bookmarks.js"
-    },
-    {
       "name": "js/pages/settings/settings.js",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/settings/settings.js"
     },
@@ -128,6 +124,10 @@
     {
       "name": "js/pages/default/default.js",
       "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/pages/default/default.js"
+    },
+    {
+      "name": "js/core/init.js",
+      "url": "https://raw.githubusercontent.com/OsamaMabrouk0/dof3tna-app-v3-update/main/www/js/core/init.js"
     },
     {
       "name": "assets/images/schedules/intizam/1-2.jpg",
