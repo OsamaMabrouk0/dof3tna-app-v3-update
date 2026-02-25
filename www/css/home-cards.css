@@ -1,0 +1,310 @@
+/* =====================================================
+   🃏 CARD ENHANCEMENTS
+   Light mode shadows · Borders · Depth & Polish
+   ===================================================== */
+
+/* ─────────────────────────────────────────────────────
+   CSS Variables — Light & Dark
+───────────────────────────────────────────────────── */
+:root {
+    /* Card layers in light */
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --card-border: rgba(0, 0, 0, 0.07);
+    --card-border-hover: rgba(0, 0, 0, 0.12);
+
+    /* Shadows — layered for depth */
+    --shadow-card:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 3px 8px rgba(0, 0, 0, 0.06),
+        0 8px 20px rgba(0, 0, 0, 0.05);
+    --shadow-card-hover:
+        0 2px 4px rgba(0, 0, 0, 0.05),
+        0 6px 16px rgba(0, 0, 0, 0.09),
+        0 16px 36px rgba(0, 0, 0, 0.07);
+    --shadow-card-sm:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 2px 6px rgba(0, 0, 0, 0.05);
+
+    /* Inner highlight line at top (glass effect) */
+    --card-inner-top: rgba(255, 255, 255, 0.9);
+
+    /* Accent border colors */
+    --accent-blue-border: rgba(59, 130, 246, 0.18);
+    --accent-cyan-border: rgba(6, 182, 212, 0.18);
+    --accent-amber-border: rgba(245, 158, 11, 0.18);
+}
+
+html.dark {
+    --card-bg: rgba(17, 25, 40, 0.75);
+    --card-border: rgba(255, 255, 255, 0.06);
+    --card-border-hover: rgba(255, 255, 255, 0.10);
+
+    --shadow-card:
+        0 1px 2px rgba(0, 0, 0, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.20);
+    --shadow-card-hover:
+        0 2px 4px rgba(0, 0, 0, 0.30),
+        0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-card-sm:
+        0 1px 3px rgba(0, 0, 0, 0.20);
+
+    --card-inner-top: rgba(255, 255, 255, 0.04);
+
+    --accent-blue-border: rgba(59, 130, 246, 0.20);
+    --accent-cyan-border: rgba(6, 182, 212, 0.20);
+    --accent-amber-border: rgba(245, 158, 11, 0.20);
+}
+
+html.oled {
+    --card-bg: rgba(12, 12, 14, 0.95);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-border-hover: rgba(255, 255, 255, 0.13);
+
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.50);
+    --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.60);
+    --shadow-card-sm: 0 1px 4px rgba(0, 0, 0, 0.40);
+
+    --card-inner-top: rgba(255, 255, 255, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────
+   glass-panel — Core Enhancement
+───────────────────────────────────────────────────── */
+.glass-panel {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease;
+    /* Subtle inner highlight at top edge */
+    position: relative;
+}
+
+/* Glass sheen line */
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    top: 0;
+    height: 1px;
+
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Hover lift for interactive cards */
+.glass-panel:hover {
+    border-color: var(--card-border-hover) !important;
+    box-shadow: var(--shadow-card-hover);
+}
+
+/* ─────────────────────────────────────────────────────
+   Section Cards — slight colored top-border accent
+───────────────────────────────────────────────────── */
+
+/* Hero card — overflow hidden لحماية الـ border-radius
+   استثناء: شريط التنقل السفلي يحتاج overflow visible لزر FAB */
+.glass-panel.rounded-2xl:not(#bottom-nav .glass-panel),
+.glass-panel.rounded-3xl {
+    overflow: hidden;
+}
+
+/* Cards in grid sections get a more defined border */
+#page-home .glass-panel {
+    border-color: var(--card-border) !important;
+}
+
+/* ─────────────────────────────────────────────────────
+   Stat / file / notif inner rows
+───────────────────────────────────────────────────── */
+
+/* Inner item cards (stat boxes, file rows on hover etc.) */
+.glass-panel .glass-panel {
+    box-shadow: var(--shadow-card-sm) !important;
+    border-color: var(--card-border) !important;
+}
+
+.glass-panel .glass-panel:hover {
+    box-shadow: var(--shadow-card) !important;
+    border-color: var(--card-border-hover) !important;
+}
+
+/* ─────────────────────────────────────────────────────
+   Header glass (mobile)
+───────────────────────────────────────────────────── */
+header.glass-panel {
+    box-shadow:
+        0 1px 0 var(--card-border),
+        0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+header.glass-panel::before {
+    display: none;
+}
+
+/* Skeleton header — match new 64px height, rounded-xl buttons, no-circle */
+html:not(.dark):not(.oled) .skeleton-header--mobile {
+    border-bottom-left-radius: 18px !important;
+    border-bottom-right-radius: 18px !important;
+}
+
+/* Light mode — header icon glow on specific icons */
+html:not(.dark):not(.oled) #conn-btn .fa-wifi { filter: drop-shadow(0 0 5px rgba(16,185,129,0.4)); }
+html:not(.dark):not(.oled) #theme-btn .fa-sun  { filter: drop-shadow(0 0 5px rgba(245,158,11,0.4)); }
+html:not(.dark):not(.oled) #notif-btn .fa-bell { filter: drop-shadow(0 0 4px rgba(59,130,246,0.25)); }
+
+/* ─────────────────────────────────────────────────────
+   Sidebar glass
+───────────────────────────────────────────────────── */
+aside.glass-panel,
+#sidebar {
+    box-shadow:
+        -4px 0 20px rgba(0, 0, 0, 0.04),
+        -1px 0 0 var(--card-border) !important;
+    border-left: 1px solid var(--card-border) !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+aside.glass-panel::before {
+    display: none;
+}
+
+/* ─────────────────────────────────────────────────────
+   Bottom Nav glass
+───────────────────────────────────────────────────── */
+#bottom-nav .glass-panel {
+    box-shadow:
+        0 -1px 0 var(--card-border),
+        0 -4px 20px rgba(0, 0, 0, 0.08),
+        0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+/* ─────────────────────────────────────────────────────
+   Quick Access Cards
+───────────────────────────────────────────────────── */
+.quick-card {
+    box-shadow: var(--shadow-card-sm);
+    border-color: var(--card-border) !important;
+}
+
+.quick-card:hover {
+    box-shadow: var(--shadow-card-hover);
+}
+
+/* ─────────────────────────────────────────────────────
+   Light mode specific — stronger visibility
+───────────────────────────────────────────────────── */
+html:not(.dark):not(.oled) .glass-panel {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.03),
+        0 2px 6px rgba(0, 0, 0, 0.06),
+        0 6px 18px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+html:not(.dark):not(.oled) .glass-panel:hover {
+    box-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.05),
+        0 6px 16px rgba(0, 0, 0, 0.09),
+        0 14px 32px rgba(0, 0, 0, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.11) !important;
+}
+
+/* Nested cards in light mode */
+html:not(.dark):not(.oled) .glass-panel .glass-panel {
+    background: rgba(249, 250, 251, 0.95) !important;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 2px 6px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Section header cards in light mode */
+html:not(.dark):not(.oled) section.glass-panel,
+html:not(.dark):not(.oled) div.glass-panel {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* ─────────────────────────────────────────────────────
+   Colored accent borders for specific sections
+───────────────────────────────────────────────────── */
+
+/* Hero card — blue tint */
+html:not(.dark):not(.oled) #page-home>div>.glass-panel:first-child {
+    border-color: var(--accent-blue-border) !important;
+    box-shadow:
+        0 1px 2px rgba(59, 130, 246, 0.05),
+        0 4px 12px rgba(59, 130, 246, 0.06),
+        0 10px 28px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+html.dark #page-home>div>.glass-panel:first-child {
+    border-color: var(--accent-blue-border) !important;
+}
+
+/* Stats section — cyan accent */
+html:not(.dark):not(.oled) #stats-container {
+    /* just inside its card */
+}
+
+/* ─────────────────────────────────────────────────────
+   Skeleton loader — match card style
+───────────────────────────────────────────────────── */
+.skeleton-recent-card,
+.skeleton-stats-card,
+.skeleton-notifications,
+.skeleton-hero {
+    box-shadow: var(--shadow-card-sm);
+}
+
+html:not(.dark):not(.oled) .skeleton-recent-card,
+html:not(.dark):not(.oled) .skeleton-stats-card,
+html:not(.dark):not(.oled) .skeleton-notifications,
+html:not(.dark):not(.oled) .skeleton-hero {
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────
+   Sidebar nav items hover
+───────────────────────────────────────────────────── */
+html:not(.dark):not(.oled) #sidebar-links a,
+html:not(.dark):not(.oled) #sidebar-links button {
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+html:not(.dark):not(.oled) #sidebar-links a:hover,
+html:not(.dark):not(.oled) #sidebar-links button:hover,
+html:not(.dark):not(.oled) #sidebar-links a.active,
+html:not(.dark):not(.oled) #sidebar-links button.active {
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* ─────────────────────────────────────────────────────
+   Smooth background — light mode page bg
+───────────────────────────────────────────────────── */
+html:not(.dark):not(.oled) body {
+    background-color: #f1f5f9;
+}
+
+html:not(.dark):not(.oled) .bg-light-grad {
+    opacity: 1 !important;
+}

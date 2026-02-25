@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولّد JSON الفيديوهات — دفعتنا</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f1f5f9;
+    --surface:  #ffffff;
+    --border:   rgba(0,0,0,0.08);
+    --text:     #1e293b;
+    --muted:    #64748b;
+    --accent:   #ef4444;
+    --accent-s: rgba(239,68,68,0.1);
+    --radius:   14px;
+    --shadow:   0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── Layout ── */
+  .page { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  /* ── Header ── */
+  .header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 20px 24px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
+            box-shadow: var(--shadow); }
+  .header-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-s);
+                 border: 1px solid rgba(239,68,68,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .header h1 { font-size: 18px; font-weight: 900; }
+  .header p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── Section ── */
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+             padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .section-title { font-size: 13px; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title i { color: var(--accent); }
+
+  /* ── Form ── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+
+  input, select {
+    width: 100%; padding: 9px 12px; border-radius: 10px; font-family: 'Cairo', sans-serif;
+    font-size: 12px; border: 1px solid var(--border); background: #f8fafc;
+    color: var(--text); outline: none; transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus {
+    border-color: rgba(239,68,68,.4); box-shadow: 0 0 0 3px rgba(239,68,68,.08);
+    background: #fff;
+  }
+
+  /* ── Buttons ── */
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
+         border-radius: 10px; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 700;
+         cursor: pointer; border: none; transition: all .2s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #dc2626; }
+  .btn-secondary { background: var(--accent-s); color: var(--accent); border: 1px solid rgba(239,68,68,.2); }
+  .btn-secondary:hover { background: rgba(239,68,68,.15); }
+  .btn-ghost { background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: #e2e8f0; }
+  .btn-danger { background: rgba(239,68,68,.08); color: var(--accent); border: 1px solid rgba(239,68,68,.15); }
+  .btn-danger:hover { background: rgba(239,68,68,.15); }
+
+  /* ── Items list ── */
+  .items-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .item-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+              background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; }
+  .item-row .item-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--accent-s);
+                          border: 1px solid rgba(239,68,68,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .item-row .item-info { flex: 1; min-width: 0; }
+  .item-row .item-title { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-row .item-meta  { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .item-row .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 20px; font-size: 9px; font-weight: 800; }
+  .badge-yt { background: rgba(239,68,68,.1); color: #ef4444; }
+  .badge-drive { background: rgba(59,130,246,.1); color: #3b82f6; }
+  .badge-playlist { background: rgba(139,92,246,.1); color: #8b5cf6; }
+  .badge-video { background: rgba(16,185,129,.1); color: #10b981; }
+
+  /* ── Output ── */
+  .output-area { background: #0f172a; border-radius: 12px; overflow: hidden; }
+  .output-header { padding: 10px 16px; background: #1e293b; display: flex; align-items: center; justify-content: space-between; }
+  .output-header span { font-size: 11px; color: #94a3b8; font-weight: 700; }
+  .output-code { padding: 16px; font-family: 'Courier New', monospace; font-size: 11px;
+                 color: #e2e8f0; white-space: pre; overflow-x: auto; max-height: 380px; overflow-y: auto;
+                 line-height: 1.7; }
+
+  /* ── Empty state ── */
+  .empty { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; }
+  .empty i { font-size: 28px; margin-bottom: 8px; opacity: .3; display: block; }
+
+  /* ── Toast ── */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
+           background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 50px;
+           font-size: 12px; font-weight: 700; font-family: 'Cairo', sans-serif;
+           box-shadow: 0 8px 24px rgba(0,0,0,.2); transition: transform .3s; z-index: 999; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── Separator ── */
+  .sep { height: 1px; background: var(--border); margin: 14px 0; }
+
+  @media (max-width: 580px) {
+    .form-row, .form-row.three { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon"><i class="fa-brands fa-youtube" style="color:#ef4444;font-size:18px;"></i></div>
+    <div>
+      <h1>مولّد JSON الفيديوهات</h1>
+      <p>أنشئ ملف <code>videos.json</code> الخاص بـ صفحة الفيديوهات في دفعتنا</p>
+    </div>
+  </div>
+
+  <!-- Form إضافة فيديو -->
+  <div class="section">
+    <div class="section-title"><i class="fa-solid fa-plus-circle"></i> إضافة فيديو / قائمة تشغيل</div>
+
+    <div class="form-row">
+      <div>
+        <label>العنوان *</label>
+        <input type="text" id="f-title" placeholder="مثال: محاضرة 1 — المحاسبة المالية">
+      </div>
+      <div>
+        <label>المادة *</label>
+        <input type="text" id="f-subject" placeholder="مثال: محاسبة" list="subjects-list">
+        <datalist id="subjects-list">
+          <option value="محاسبة"><option value="اقتصاد"><option value="إحصاء">
+          <option value="إدارة"><option value="تسويق"><option value="مالية">
+          <option value="بنوك"><option value="قانون"><option value="تأمين">
+          <option value="تجارة"><option value="أعمال"><option value="انجليزي">
+        </datalist>
+      </div>
+    </div>
+
+    <div class="form-row three">
+      <div>
+        <label>المنصة *</label>
+        <select id="f-platform" onchange="onPlatformChange()">
+          <option value="youtube">YouTube</option>
+          <option value="drive">Google Drive</option>
+        </select>
+      </div>
+      <div>
+        <label>النوع *</label>
+        <select id="f-type">
+          <option value="video">فيديو</option>
+          <option value="playlist">قائمة تشغيل</option>
+        </select>
+      </div>
+      <div id="url-field">
+        <label id="url-label">رابط الفيديو *</label>
+        <input type="url" id="f-url" placeholder="https://youtu.be/...">
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="btn btn-primary" onclick="addItem()">
+        <i class="fa-solid fa-plus"></i> إضافة
+      </button>
+      <button class="btn btn-ghost" onclick="clearForm()">
+        <i class="fa-solid fa-broom"></i> مسح الحقول
+      </button>
+      <span id="form-hint" style="font-size:11px;color:#ef4444;display:none;"></span>
+    </div>
+  </div>
+
+  <!-- قائمة العناصر المضافة -->
+  <div class="section">
+    <div class="section-title" style="justify-content:space-between;">
+      <span><i class="fa-solid fa-list-ul"></i> الفيديوهات المضافة (<span id="items-count">0</span>)</span>
+      <button class="btn btn-danger" onclick="clearAll()" style="padding:5px 12px; font-size:11px;">
+        <i class="fa-solid fa-trash-can"></i> حذف الكل
+      </button>
+    </div>
+    <div class="items-list" id="items-list">
+      <div class="empty" id="items-empty">
+        <i class="fa-solid fa-video-slash"></i>
+        لم تُضف أي فيديو بعد
+      </div>
+    </div>
+  </div>
+
+  <!-- JSON Output -->
+  <div class="section">
+    <div class="section-title" style="justify-content:space-between;">
+      <span><i class="fa-solid fa-code"></i> الكود الجاهز (JSON)</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="copyJSON()">
+          <i class="fa-solid fa-copy"></i> نسخ
+        </button>
+        <button class="btn btn-primary" onclick="downloadJSON()">
+          <i class="fa-solid fa-download"></i> تحميل videos.json
+        </button>
+      </div>
+    </div>
+    <div class="output-area">
+      <div class="output-header">
+        <span>videos.json</span>
+        <span id="json-count" style="color:#22d3ee;">0 عنصر</span>
+      </div>
+      <div class="output-code" id="json-output">[]</div>
+    </div>
+  </div>
+
+  <!-- تعليمات -->
+  <div class="section">
+    <div class="section-title"><i class="fa-solid fa-circle-info"></i> تعليمات الاستخدام</div>
+    <ol style="font-size:12px; color:var(--muted); line-height:2.2; padding-right:18px;">
+      <li>أضف الفيديوهات من النموذج أعلاه</li>
+      <li>حمّل الملف <strong>videos.json</strong></li>
+      <li>ارفعه في مستودع GitHub الخاص بك</li>
+      <li>
+        في ملف <strong>constants.js</strong> أضف داخل <code>App.GITHUB</code>:
+        <div style="background:#0f172a; color:#86efac; padding:10px 14px; border-radius:8px; font-family:monospace; font-size:11px; margin-top:8px; line-height:1.8;">
+VIDEOS_URL: 'https://raw.githubusercontent.com/username/repo/main/data/videos.json',
+        </div>
+      </li>
+      <li>استبدل <code>username/repo</code> بمسار مستودعك الفعلي</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  let items = [];
+
+  function onPlatformChange() {
+    const platform = document.getElementById('f-platform').value;
+    const lbl = document.getElementById('url-label');
+    const inp = document.getElementById('f-url');
+    if (platform === 'youtube') {
+      lbl.textContent = 'رابط YouTube *';
+      inp.placeholder = 'https://youtu.be/... أو https://youtube.com/playlist?list=...';
+    } else {
+      lbl.textContent = 'رابط Google Drive *';
+      inp.placeholder = 'https://drive.google.com/file/d/... أو /drive/folders/...';
+    }
+  }
+
+  function addItem() {
+    const title    = document.getElementById('f-title').value.trim();
+    const subject  = document.getElementById('f-subject').value.trim();
+    const platform = document.getElementById('f-platform').value;
+    const type     = document.getElementById('f-type').value;
+    const url      = document.getElementById('f-url').value.trim();
+    const hint     = document.getElementById('form-hint');
+
+    if (!title || !subject || !url) {
+      hint.textContent = '⚠️ يرجى ملء جميع الحقول الإلزامية';
+      hint.style.display = 'block';
+      setTimeout(() => hint.style.display = 'none', 2500);
+      return;
+    }
+
+    hint.style.display = 'none';
+
+    items.push({ title, subject, platform, type, url });
+    clearForm();
+    renderItems();
+    updateJSON();
+    showToast('✅ تمت الإضافة بنجاح');
+  }
+
+  function clearForm() {
+    ['f-title','f-subject','f-url'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-platform').value = 'youtube';
+    document.getElementById('f-type').value = 'video';
+  }
+
+  function deleteItem(idx) {
+    items.splice(idx, 1);
+    renderItems();
+    updateJSON();
+  }
+
+  function clearAll() {
+    if (!items.length) return;
+    items = [];
+    renderItems();
+    updateJSON();
+    showToast('🗑️ تم حذف جميع العناصر');
+  }
+
+  function renderItems() {
+    const list  = document.getElementById('items-list');
+    const empty = document.getElementById('items-empty');
+    const count = document.getElementById('items-count');
+
+    count.textContent = items.length;
+
+    if (!items.length) {
+      list.innerHTML = '<div class="empty" id="items-empty"><i class="fa-solid fa-video-slash"></i>لم تُضف أي فيديو بعد</div>';
+      return;
+    }
+
+    list.innerHTML = items.map((item, i) => {
+      const isYT = item.platform === 'youtube';
+      return `
+        <div class="item-row">
+          <div class="item-icon">
+            <i class="fa-brands ${isYT ? 'fa-youtube' : 'fa-google-drive'}"
+               style="color:${isYT ? '#ef4444' : '#3b82f6'};font-size:14px;"></i>
+          </div>
+          <div class="item-info">
+            <div class="item-title">${item.title}</div>
+            <div class="item-meta">
+              ${item.subject} ·
+              <span class="badge ${isYT ? 'badge-yt' : 'badge-drive'}">
+                <i class="fa-brands ${isYT ? 'fa-youtube' : 'fa-google-drive'}"></i>
+                ${isYT ? 'YouTube' : 'Drive'}
+              </span>
+              <span class="badge ${item.type === 'playlist' ? 'badge-playlist' : 'badge-video'}">
+                <i class="fa-solid ${item.type === 'playlist' ? 'fa-list-ul' : 'fa-circle-play'}"></i>
+                ${item.type === 'playlist' ? 'قائمة' : 'فيديو'}
+              </span>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-danger" style="padding:5px 10px;font-size:11px;" onclick="deleteItem(${i})">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function updateJSON() {
+    const code  = document.getElementById('json-output');
+    const count = document.getElementById('json-count');
+    const json  = JSON.stringify(items, null, 2);
+    code.textContent = json;
+    count.textContent = `${items.length} عنصر`;
+  }
+
+  function copyJSON() {
+    const text = document.getElementById('json-output').textContent;
+    navigator.clipboard.writeText(text).then(() => showToast('📋 تم النسخ!'));
+  }
+
+  function downloadJSON() {
+    if (!items.length) { showToast('⚠️ لا يوجد بيانات للتحميل'); return; }
+    const blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'videos.json';
+    a.click();
+    showToast('⬇️ جاري التحميل…');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
