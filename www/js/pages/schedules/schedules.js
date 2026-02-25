@@ -563,7 +563,7 @@ html:not(.dark) .sp-tb-btn:hover { background:rgba(0,0,0,.12); }
 
         <!-- Image canvas -->
         <div class="sp-canvas" id="sp-canvas">
-            <img id="sp-img" src="${img.src}" alt="${img.label}" draggable="false" />
+            <img id="sp-img" src="${resolveSrc(img.src)}" alt="${img.label}" draggable="false" />
         </div>
 
         <!-- Dot indicators -->
@@ -752,7 +752,7 @@ html:not(.dark) .sp-tb-btn:hover { background:rgba(0,0,0,.12); }
         lb.id = 'sp-lightbox';
         lb.innerHTML = `
             <div class="sp-lb-canvas" id="sp-lb-canvas">
-                <img id="sp-lb-img" src="${cur.src}" alt="${cur.label}" />
+                <img id="sp-lb-img" src="${resolveSrc(cur.src)}" alt="${cur.label}" />
             </div>
             <button class="sp-lb-close" id="sp-lb-close"><i class="fa-solid fa-xmark"></i></button>
             <div class="sp-lb-info">
@@ -847,6 +847,19 @@ html:not(.dark) .sp-tb-btn:hover { background:rgba(0,0,0,.12); }
         return `rgba(${r},${g},${b},${a})`;
     }
 
+    // ✅ يحوّل المسار النسبي إلى مسار مطلق عند التشغيل داخل Android
+    // على المتصفح العادي: يُرجع المسار كما هو بدون تعديل
+    function resolveSrc(relativePath) {
+        try {
+            if (window.Android && typeof window.Android.getBasePath === 'function') {
+                // احذف ../  من البداية وابنِ المسار المطلق الصحيح
+                const clean = relativePath.replace(/^(\.\.\/)+/, '');
+                return window.Android.getBasePath() + '/' + clean;
+            }
+        } catch (e) { /* تجاهل */ }
+        return relativePath; // fallback للمتصفح العادي
+    }
+
     function renderSwitcher() {
         return Object.values(TYPES).map(t => {
             const isActive = t.key === activeType;
@@ -915,7 +928,7 @@ html:not(.dark) .sp-tb-btn:hover { background:rgba(0,0,0,.12); }
         </div>
         <!-- Image canvas -->
         <div class="sp-canvas" id="sp-canvas">
-            <img id="sp-img" src="${img.src}" alt="${img.label}" draggable="false" />
+            <img id="sp-img" src="${resolveSrc(img.src)}" alt="${img.label}" draggable="false" />
         </div>
         <!-- Toolbar -->
         <div class="sp-toolbar">
@@ -1082,7 +1095,7 @@ html:not(.dark) .sp-tb-btn:hover { background:rgba(0,0,0,.12); }
         lb.id = 'sp-lightbox';
         lb.innerHTML = `
             <div class="sp-lb-canvas" id="sp-lb-canvas">
-                <img id="sp-lb-img" src="${cur.src}" alt="${cur.label}" />
+                <img id="sp-lb-img" src="${resolveSrc(cur.src)}" alt="${cur.label}" />
             </div>
             <button class="sp-lb-close" id="sp-lb-close"><i class="fa-solid fa-xmark"></i></button>
             <div class="sp-lb-info">
