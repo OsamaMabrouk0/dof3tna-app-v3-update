@@ -1,0 +1,23 @@
+[
+  {
+    "title": "تجربة فيديو يوتيوب",
+    "subject": "محاسبة",
+    "platform": "youtube",
+    "type": "video",
+    "url": "https://youtu.be/y29DhLKr3D0?si=nGrEj5gsF3Xa4EBX"
+  },
+  {
+    "title": "تجربة قائمة يوتيوب",
+    "subject": "محاسبة",
+    "platform": "youtube",
+    "type": "playlist",
+    "url": "https://youtube.com/playlist?list=PLfOpKdBZIZXI_Exp-0IZyWv2kMNdEzE3N&si=iHxRZuBq1XskPCjs"
+  },
+  {
+    "title": "تجربة فيديو درايف",
+    "subject": "محاسبة",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1dtfHlMI24U4USgkgdAxak-VXIg6Ad8mA/view?usp=drive_link"
+  }
+]
