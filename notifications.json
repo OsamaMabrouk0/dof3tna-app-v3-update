@@ -34,8 +34,18 @@
   "color": "blue",
   "timestamp": "2026-02-26T21:17:58.526Z",
   "category": "fix"
+  },
+  {
+  "id": "notif_mm3zqc1k",
+  "title": "تجربة التحديث الاصدار التاني من الرسالة",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 يعمل بشكل سليم ام لا",
+  "icon": "fa-check-circle",
+  "color": "amber",
+  "timestamp": "2026-02-26T21:43:55.256Z",
+  "category": "update"
  }
 ]
+
 
 
 
