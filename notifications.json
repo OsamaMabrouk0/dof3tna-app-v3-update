@@ -25,8 +25,18 @@
     "color": "amber",
     "timestamp": "2026-01-12T09:00:00",
     "category": "maintenance"
-  }
+  },
+  {
+  "id": "notif_mm3wv3m1",
+  "title": "تحديث v3",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3",
+  "icon": "fa-lightbulb",
+  "color": "yellow",
+  "timestamp": "2026-02-26T20:23:38.761Z",
+  "category": "maintenance"
+ }
 ]
+
 
 
 
