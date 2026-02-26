@@ -69,13 +69,22 @@
                 return;
             }
 
-            fetch(NOTIFICATIONS_URL)
-                .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+            // ✅ دائماً يجلب من الشبكة بـ no-cache لضمان التزامن مع إشعارات التطبيق
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+            fetch(NOTIFICATIONS_URL, {
+                signal: controller.signal,
+                cache: 'no-store',
+                headers: { 'Cache-Control': 'no-cache, no-store' }
+            })
+                .then(r => { clearTimeout(timeoutId); if (!r.ok) throw new Error(); return r.json(); })
                 .then(data => {
                     App.Cache.set(cacheKey, data);
                     resolve(processNotifications(data));
                 })
                 .catch(function () {
+                    clearTimeout(timeoutId);
                     const cached = App.Cache.get(cacheKey);
                     if (cached) {
                         App.Toast.warning('تم تحميل البيانات المحفوظة', 'غير متصل');
