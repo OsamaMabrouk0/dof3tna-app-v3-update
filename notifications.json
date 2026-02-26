@@ -43,8 +43,18 @@
   "color": "red",
   "timestamp": "2026-02-26T20:50:38.446Z",
   "category": "update"
+  },
+  {
+  "id": "notif_mm3ydxm2",
+  "title": "تحديث v3 نسحخة جديدةقلثقل41ي",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 ييسسىيسميرر",
+  "icon": "fa-exclamation-triangle",
+  "color": "amber",
+  "timestamp": "2026-02-26T21:06:17.066Z",
+  "category": "update"
  }
 ]
+
 
 
 
