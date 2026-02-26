@@ -61,7 +61,17 @@
   "color": "amber",
   "timestamp": "2026-02-26T15:30:08.359Z",
   "category": "fix"
+},
+{
+  "id": "notif_mm3o2n36",
+  "title": "تجربة تحديث التطبيق  2",
+  "message": "هذه الرسالة ل تجرب الرسائل و الاشعارات على التطبيق",
+  "icon": "fa-bell",
+  "color": "amber",
+  "timestamp": "2026-02-26T16:17:34.050Z",
+  "category": "fix"
 }
 ]
+
 
 
