@@ -34,8 +34,18 @@
   "color": "yellow",
   "timestamp": "2026-02-26T20:23:38.761Z",
   "category": "maintenance"
+ },
+ {
+  "id": "notif_mm3xttda",
+  "title": "تحديث v3 نسحخة جديدة",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 ييسسىيسميرر",
+  "icon": "fa-bell",
+  "color": "red",
+  "timestamp": "2026-02-26T20:50:38.446Z",
+  "category": "update"
  }
 ]
+
 
 
 
