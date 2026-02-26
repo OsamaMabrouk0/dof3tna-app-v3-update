@@ -27,33 +27,16 @@
     "category": "maintenance"
   },
   {
-  "id": "notif_mm3wv3m1",
-  "title": "تحديث v3",
-  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3",
-  "icon": "fa-lightbulb",
-  "color": "yellow",
-  "timestamp": "2026-02-26T20:23:38.761Z",
-  "category": "maintenance"
- },
- {
-  "id": "notif_mm3xttda",
-  "title": "تحديث v3 نسحخة جديدة",
-  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 ييسسىيسميرر",
+  "id": "notif_mm3ysyv2",
+  "title": "تجربة التحديث",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 يعمل بشكل سليم ام لا",
   "icon": "fa-bell",
-  "color": "red",
-  "timestamp": "2026-02-26T20:50:38.446Z",
-  "category": "update"
-  },
-  {
-  "id": "notif_mm3ydxm2",
-  "title": "تحديث v3 نسحخة جديدةقلثقل41ي",
-  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 ييسسىيسميرر",
-  "icon": "fa-exclamation-triangle",
-  "color": "amber",
-  "timestamp": "2026-02-26T21:06:17.066Z",
-  "category": "update"
+  "color": "blue",
+  "timestamp": "2026-02-26T21:17:58.526Z",
+  "category": "fix"
  }
 ]
+
 
 
 
