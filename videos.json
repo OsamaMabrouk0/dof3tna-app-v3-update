@@ -1,23 +1,44 @@
 [
   {
-    "title": "تجربة فيديو يوتيوب",
-    "subject": "محاسبة",
+    "title": "محاضرات موازنة الدولة",
+    "subject": "موازنة الدولة",
     "platform": "youtube",
-    "type": "video",
+    "type": "playlist",
     "url": ""
   },
   {
-    "title": "تجربة قائمة يوتيوب",
+    "title": "محاضرات محاسبة حكومية",
     "subject": "محاسبة",
     "platform": "youtube",
     "type": "playlist",
-    "url": "https://youtube.com/playlist?list=PLfOpKdBZIZXI_Exp-0IZyWv2kMNdEzE3N&si=iHxRZuBq1XskPCjs"
+    "url": ""
   },
   {
-    "title": "تجربة فيديو درايف",
+    "title": "محاضرات محاسبة متوسطة 2",
     "subject": "محاسبة",
-    "platform": "drive",
-    "type": "video",
-    "url": "https://drive.google.com/file/d/1dtfHlMI24U4USgkgdAxak-VXIg6Ad8mA/view?usp=drive_link"
+    "platform": "youtube",
+    "type": "playlist",
+    "url": ""
+  },
+  {
+    "title": "محاضرات موارد بشرية",
+    "subject": "موارد بشرية",
+    "platform": "youtube",
+    "type": "playlist",
+    "url": ""
+  },
+  {
+    "title": "محاضرات تأمين",
+    "subject": "تأمين",
+    "platform": "youtube",
+    "type": "playlist",
+    "url": ""
+  },
+  {
+    "title": "محاضرات تمويل",
+    "subject": "تمويل",
+    "platform": "youtube",
+    "type": "playlist",
+    "url": ""
   }
 ]
