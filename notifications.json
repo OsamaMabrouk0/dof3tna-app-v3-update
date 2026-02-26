@@ -52,6 +52,16 @@
   "color": "yellow",
   "timestamp": "2026-02-24T22:47:51.944Z",
   "category": "announcement"
+},
+{
+  "id": "notif_mm3mdnc7",
+  "title": "تجربة تحديث التطبيق",
+  "message": "هذه الرسالة ل تجرب الرسائل و الاشعارات على التطبيق",
+  "icon": "fa-wrench",
+  "color": "amber",
+  "timestamp": "2026-02-26T15:30:08.359Z",
+  "category": "fix"
 }
 ]
+
 
