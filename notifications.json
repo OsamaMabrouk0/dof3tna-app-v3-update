@@ -52,8 +52,8 @@
   "color": "yellow",
   "timestamp": "2026-02-24T22:47:51.944Z",
   "category": "announcement"
-},
-{
+  },
+  {
   "id": "notif_mm3mdnc7",
   "title": "تجربة تحديث التطبيق",
   "message": "هذه الرسالة ل تجرب الرسائل و الاشعارات على التطبيق",
@@ -61,17 +61,18 @@
   "color": "amber",
   "timestamp": "2026-02-26T15:30:08.359Z",
   "category": "fix"
-},
-{
-  "id": "notif_mm3o2n36",
-  "title": "تجربة تحديث التطبيق  2",
-  "message": "هذه الرسالة ل تجرب الرسائل و الاشعارات على التطبيق",
+  },
+  {
+  "id": "notif_mm3o88b1",
+  "title": "مغثفلقببيقثىللى",
+  "message": "ياففقاققفا",
   "icon": "fa-bell",
-  "color": "amber",
-  "timestamp": "2026-02-26T16:17:34.050Z",
-  "category": "fix"
-}
+  "color": "blue",
+  "timestamp": "2026-02-26T16:21:54.829Z",
+  "category": "update"
+  }
 ]
+
 
 
 
