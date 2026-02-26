@@ -43,8 +43,18 @@
   "color": "amber",
   "timestamp": "2026-02-26T21:43:55.256Z",
   "category": "update"
- }
+  },
+  {
+  "id": "notif_mm400jpq",
+  "title": "تجربة التحديث الاصدار الثالث من الرسالة",
+  "message": "اشعار ل تجرب تحديث التطبيق للاصدار 3 يعمل بشكل سليم ام لا",
+  "icon": "fa-clock",
+  "color": "indigo",
+  "timestamp": "2026-02-26T21:51:51.758Z",
+  "category": "tips"
+  }
 ]
+
 
 
 
