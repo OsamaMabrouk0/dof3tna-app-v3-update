@@ -350,10 +350,20 @@
 
         this.setupKeyboardShortcuts();
 
+        let _wasSmallScreen = window.innerWidth < 768;
         window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768 && App.UI.BottomSheet.isOpen) {
+            const isSmallScreen = window.innerWidth < 768;
+
+            if (!isSmallScreen && App.UI.BottomSheet.isOpen) {
                 App.UI.BottomSheet.toggle(false);
             }
+
+            // Re-render sidebar icons when transitioning from mobile → desktop
+            if (_wasSmallScreen && !isSmallScreen) {
+                App.UI.Sidebar.render();
+            }
+
+            _wasSmallScreen = isSmallScreen;
         });
     };
 
