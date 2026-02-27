@@ -4,9 +4,9 @@
     App.VERSION = '3.0';
 
     App.GOOGLE_DRIVE = {
-        API_KEY: 'AIzaSyB7vGBBmmybGA_EvGsvdmhLz8qangORK0I',
-        LECTURES_FOLDER_ID: '1HR4eNb0yAdus0aOtJYRs8LotClUoNFMG',
-        SUMMARIES_FOLDER_ID: '1rMmhGxnRc--DBBzjqkVvZsQBafFws3ba',
+        API_KEY: 'AIzaSyB7EeH3hx7I3Kuit6UQdpVD2jnt2QmnAWY',       //AIzaSyB7EeH3hx7I3Kuit6UQdpVD2jnt2QmnAWY  dof3tna@gmai.com
+        LECTURES_FOLDER_ID: 'fCpKx2qCVyqKW-yeR9aGGN-WsQPa1Nbp',  //fCpKx2qCVyqKW-yeR9aGGN-WsQPa1Nbp  dof3tna@gmai.com
+        SUMMARIES_FOLDER_ID: 'QhwlElfcRSdPk5gIrbe_mM5vql4xrrEy', //QhwlElfcRSdPk5gIrbe_mM5vql4xrrEy  dof3tna@gmai.com
         API_BASE_URL: 'https://www.googleapis.com/drive/v3',
         FIELDS: 'files(id,name,mimeType,thumbnailLink,webViewLink,webContentLink,size,createdTime,modifiedTime,description)'
     };
