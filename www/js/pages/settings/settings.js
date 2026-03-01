@@ -370,7 +370,7 @@ html:not(.dark) .ab-btn-gh  { background: rgba(0,0,0,.05); color: rgba(30,30,30,
 
 
     <div class="ab-footer scroll-animate" style="animation-delay:.16s">
-        <div>منصة دفعتنا • الإصدار 3.0 • 2025</div>
+        <div>منصة دفعتنا • الإصدار 3.0 • 2026</div>
         <div style="margin-top:.2rem">مبني بـ ❤️ لدعم الطلاب في رحلتهم الأكاديمية</div>
     </div>
 </div>`;
