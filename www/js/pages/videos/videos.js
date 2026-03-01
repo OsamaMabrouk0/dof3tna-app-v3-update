@@ -11,6 +11,7 @@
     let filteredVideos = [];
     let currentFilter = 'all';
     let searchQuery = '';
+    let sortAZ = true;
     let isLoading = false;
     let eventListeners = [];
 
@@ -117,6 +118,7 @@
         isLoading = false;
         searchQuery = '';
         currentFilter = 'all';
+        sortAZ = true;
     }
 
 
@@ -136,8 +138,8 @@
             <div class="container mx-auto max-w-6xl pb-28" id="videos-page-root">
 
                 <!-- ══ شريط البحث والفلتر ══ -->
-                <div class="glass-panel rounded-2xl p-3 mb-5 scroll-animate flex items-center gap-2 sticky top-0 z-20">
-                    <!-- بحث -->
+                <div class="glass-panel rounded-2xl p-3 mb-5 scroll-animate flex items-center gap-2">
+                    <!-- أيقونة بحث -->
                     <div class="relative flex-1">
                         <i class="fa-solid fa-magnifying-glass absolute top-1/2 -translate-y-1/2 right-3 text-gray-400 text-xs pointer-events-none"></i>
                         <input id="videos-search" type="text" placeholder="ابحث عن فيديو أو مادة…"
@@ -148,6 +150,16 @@
                                       text-gray-700 dark:text-gray-200 placeholder:text-gray-400
                                       transition-all duration-250">
                     </div>
+                    <!-- زر الترتيب -->
+                    <button id="videos-sort-btn"
+                            title="ترتيب أبجدي"
+                            class="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-[11px] font-bold
+                                   bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8
+                                   text-gray-500 dark:text-gray-400 hover:text-red-500 hover:border-red-400/40
+                                   transition-all duration-200 whitespace-nowrap">
+                        <i class="fa-solid fa-arrow-down-a-z text-xs"></i>
+                        <span class="hidden sm:inline">أ-ي</span>
+                    </button>
                     <!-- عدد النتائج -->
                     <span id="videos-count-badge"
                           class="flex-shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-xl
@@ -223,6 +235,13 @@
             );
         }
 
+        // ترتيب أبجدي حسب العنوان
+        if (sortAZ) {
+            result = [...result].sort((a, b) =>
+                (a.title || '').localeCompare(b.title || '', 'ar', { sensitivity: 'base' })
+            );
+        }
+
         filteredVideos = result;
         renderFilterBar();
         renderGrid();
@@ -234,8 +253,9 @@
         const bar = document.getElementById('subjects-filter');
         if (!bar) return;
 
-
-        const subjects = ['all', ...new Set(allVideos.map(v => v.subject).filter(Boolean))];
+        // ترتيب المواد أبجدياً
+        const subjects = ['all', ...[...new Set(allVideos.map(v => v.subject).filter(Boolean))]
+            .sort((a, b) => a.localeCompare(b, 'ar', { sensitivity: 'base' }))];
 
         bar.innerHTML = subjects.map(subject => {
             const isAll = subject === 'all';
@@ -295,8 +315,34 @@
 
         let html = '';
 
+        // ترتيب المجموعات أبجدياً
+        const sortedEntries = Object.entries(grouped).sort(([a], [b]) =>
+            a.localeCompare(b, 'ar', { sensitivity: 'base' })
+        );
+
         if (showGrouped) {
-            Object.entries(grouped).forEach(([subject, videos]) => {
+            // شريط الإحصاء
+            const totalSubjects = sortedEntries.length;
+            const totalVideos = filteredVideos.length;
+            html += `
+                <div class="flex items-center gap-3 mb-4 px-1">
+                    <div class="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium">
+                        <i class="fa-solid fa-film text-red-400 text-[10px]"></i>
+                        <span>${totalVideos} فيديو</span>
+                    </div>
+                    <div class="w-1 h-1 rounded-full bg-gray-300 dark:bg-white/15"></div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium">
+                        <i class="fa-solid fa-layer-group text-blue-400 text-[10px]"></i>
+                        <span>${totalSubjects} مادة</span>
+                    </div>
+                    <div class="flex-1 h-px bg-gray-100 dark:bg-white/5 mr-1"></div>
+                    <div class="flex items-center gap-1 text-[10px] text-gray-400">
+                        <i class="fa-solid fa-arrow-down-a-z text-[9px]"></i>
+                        <span>مرتب أبجدياً</span>
+                    </div>
+                </div>`;
+
+            sortedEntries.forEach(([subject, videos]) => {
                 const style = getSubjectStyle(subject);
                 html += `
                     <div class="mb-6 scroll-animate">
@@ -477,6 +523,28 @@
         };
         input.addEventListener('keydown', keyHandler);
         eventListeners.push({ element: input, event: 'keydown', handler: keyHandler });
+
+        // زر الترتيب الأبجدي
+        const sortBtn = document.getElementById('videos-sort-btn');
+        if (sortBtn) {
+            const sortHandler = () => {
+                sortAZ = !sortAZ;
+                sortBtn.classList.toggle('text-red-500', sortAZ);
+                sortBtn.classList.toggle('border-red-400/40', sortAZ);
+                sortBtn.classList.toggle('bg-red-500/8', sortAZ);
+                const icon = sortBtn.querySelector('i');
+                if (icon) {
+                    icon.className = sortAZ
+                        ? 'fa-solid fa-arrow-down-a-z text-xs'
+                        : 'fa-solid fa-arrow-down-z-a text-xs';
+                }
+                applyFilter();
+            };
+            // تطبيق الحالة الافتراضية (مفعّل)
+            sortBtn.classList.add('text-red-500', 'border-red-400/40', 'bg-red-500/8');
+            sortBtn.addEventListener('click', sortHandler);
+            eventListeners.push({ element: sortBtn, event: 'click', handler: sortHandler });
+        }
     }
 
 
