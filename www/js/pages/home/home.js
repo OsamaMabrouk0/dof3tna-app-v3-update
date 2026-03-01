@@ -578,18 +578,24 @@
 
 
             const catMap = {
-                'lecture': 'محاضرة', 'lectures': 'محاضرة',
-                'summary': 'ملخص', 'summaries': 'ملخص',
-                'schedule': 'جدول', 'schedules': 'جدول',
-                'building': 'مبنى', 'buildings': 'مبنى',
-                'video': 'فيديو', 'videos': 'فيديو',
-                'link': 'رابط', 'links': 'رابط',
-                'exam': 'اختبار', 'exams': 'اختبار',
-                'update': 'تحديث', 'news': 'أخبار',
-                'urgent': 'عاجل', 'general': 'عام',
+                'lecture': 'محاضرة', 'lectures': 'محاضرة', 'محاضرة': 'محاضرة', 'محاضرات': 'محاضرة',
+                'summary': 'ملخص', 'summaries': 'ملخص', 'ملخص': 'ملخص', 'ملخصات': 'ملخص',
+                'schedule': 'جدول', 'schedules': 'جدول', 'جدول': 'جدول', 'جداول': 'جدول',
+                'building': 'مبنى', 'buildings': 'مبنى', 'مبنى': 'مبنى', 'مباني': 'مبنى',
+                'video': 'فيديو', 'videos': 'فيديو', 'فيديو': 'فيديو', 'فيديوهات': 'فيديو',
+                'link': 'رابط', 'links': 'رابط', 'رابط': 'رابط', 'روابط': 'رابط',
+                'exam': 'اختبار', 'exams': 'اختبار', 'اختبار': 'اختبار', 'اختبارات': 'اختبار',
+                'update': 'تحديث', 'updates': 'تحديث', 'تحديث': 'تحديث', 'تحديثات': 'تحديث',
+                'news': 'أخبار', 'أخبار': 'أخبار', 'خبر': 'أخبار',
+                'urgent': 'عاجل', 'عاجل': 'عاجل',
+                'general': 'عام', 'عام': 'عام',
+                'content': 'محتوى',
+                'maintenance': 'صيانة',
+                'fix': 'إصلاح',
+                'tips': 'نصائح',
             };
             const catKey = (notif.category || notif.type || '').toLowerCase();
-            const catAr = catMap[catKey] || null;
+            const catAr = catMap[catKey] || notif.category || notif.type || null;
 
             html += `
                 <div class="group flex items-start gap-3 px-2 py-2.5 rounded-xl cursor-pointer
