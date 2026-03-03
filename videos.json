@@ -40,5 +40,47 @@
     "platform": "youtube",
     "type": "playlist",
     "url": ""
+  },
+  {
+    "title": "فصل التطور التاريخي",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1Oe4J-OMe6YqsNMR4-N0q4FgPfqu5O9mP/view?usp=share_link"
+  },
+  {
+    "title": "تخطيط الموارد البشرية الجزء الاول",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1tq4l6Y2gdcVkYoA2AP7ZpcEaiHzDVjF8/view?usp=drivesdk"
+  },
+  {
+    "title": "تخطيط الموارد البشرية الجزء الثاني",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1KShA9DGqGYql2qIfB1TvUsqhis6tAy6P/view?usp=sharing"
+  },
+  {
+    "title": "الجزء الاول التدريب",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1GALUKQw8JZmVySxDkFnxoDlN6djkg0LF/view?usp=sharing"
+  },
+  {
+    "title": "الجزء الثاني التدريب",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/1GALUKQw8JZmVySxDkFnxoDlN6djkg0LF/view?usp=sharing"
+  },
+  {
+    "title": "الجزء الثالث التدريب",
+    "subject": "موارد بشرية",
+    "platform": "drive",
+    "type": "video",
+    "url": "https://drive.google.com/file/d/17_dYwMkAfKjnORGBcZE4RhmIQw5Sq31t/view?usp=sharing"
   }
 ]
